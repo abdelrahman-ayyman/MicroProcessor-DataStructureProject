@@ -1,0 +1,36 @@
+#include<iostream>
+#include"Process.h"
+
+#include"Processor.h"
+#include"Scheduler.h"
+#include<time.h>
+
+
+using namespace std;
+
+
+int main()
+{
+	
+	Scheduler sh;
+	sh.Load();
+	srand(time(0));
+	while(sh.gettrm()<sh.getprocessnum())
+	{
+		sh.Assign();
+		sh.CheckBlock();
+		sh.shedule();
+		sh.printpros();
+		sh.counterup();
+		if (sh.gettime() % sh.getSTL() == 0)
+			sh.workSteal();
+	//getchar();
+	}
+
+	
+	
+	
+
+	system("pause");
+	return 0;
+}
