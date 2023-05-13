@@ -437,23 +437,11 @@ void Scheduler:: addtoBLK(Process*p)
 
 	void Scheduler::Assign(Process * p)
 	{
-		Process* q;
-
-		while (!NEWlist.isEmpty())
+		
+		if (!NEWlist.isEmpty())
 		{
-			NEWlist.peek(p);
-
-			if (p->getArrivalTime() == gettime())
-			{
-				NEWlist.dequeue(q);
-				//VI
-				int minindex = checkAvailability();
-				pros[minindex]->addprocess(q);
-			}
-			else
-			{
-				break;
-			}
+			int minindex = checkAvailability();
+			pros[minindex]->addprocess(p);
 		}
 	}
 
