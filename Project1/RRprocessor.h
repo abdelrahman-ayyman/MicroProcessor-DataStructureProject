@@ -52,22 +52,21 @@ public:
 		}
 		else 
 		{
+
 			Running->incrementexcuted();
 			counterslice++;
 
 			if (Running->getexcuted() == Running->getCpuTime())
 			{
-				Running->setTermination(psh->gettime());
-				psh->addtoTRM(Running);
-				Running = nullptr;
+				psh->Completed(Running);
+
 				counterslice = 0;
 			}
 			else if (Running->needio() != -1)
 			{
 				psh->IOHandling(Running);
-				Running = nullptr;
-				counterslice = 0;
 			}
+			
 			else
 			{
 				int timeslice = psh->getslice();

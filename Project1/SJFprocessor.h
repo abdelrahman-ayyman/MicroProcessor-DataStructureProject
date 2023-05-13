@@ -43,17 +43,16 @@ void printRdyList()
 	
 	if(Running!=nullptr)
 	{
+
 		Running->incrementexcuted();
-		if(Running->getexcuted()==Running->getCpuTime())
+		if (Running->getexcuted() == Running->getCpuTime())
 		{
-			Running->setTermination(psh->gettime());
-			psh->addtoTRM(Running);
-			Running=nullptr;
+			psh->Completed(Running);
+
 		}
-		else if(Running->needio()!=-1)
+		else if (Running->needio() != -1)
 		{
 			psh->IOHandling(Running);
-			Running = nullptr;
 		}
 	}
 

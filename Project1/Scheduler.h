@@ -89,8 +89,9 @@ public:
 	bool CanForkChild(Process* Process);
 	void forkChild(Process* Process);
 	Processor* findShortestRdyList();
-
-	void IOHandling(Process*);
+	//
+	void IOHandling(Process*& run);
 	void CheckBlock();
+	void Completed(Process*&run);
 };
 

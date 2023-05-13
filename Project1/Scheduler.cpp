@@ -391,12 +391,13 @@ void Scheduler:: addtoBLK(Process*p)
 
 
 	///////Start of io handling
-	void Scheduler::IOHandling(Process* run)
+	void Scheduler::IOHandling(Process*& run)
 	{
 
 		int x = run->needio() + timestep;;
 		run->setIOneeded(x);
 		addtoBLK(run);
+		run = nullptr;
 	}
 
 
@@ -421,6 +422,16 @@ void Scheduler:: addtoBLK(Process*p)
 				return;
 			}
 		}
+	}
+
+	//Completion//
+	void Scheduler::Completed(Process*&run)
+	{
+
+		run->setTermination(gettime());
+		addtoTRM(run);
+		run = nullptr;
+
 	}
 
 

@@ -47,7 +47,7 @@ void peek(Process* p)
 
  void ScheduleAlgo()
 {
-
+	 //
 	if(Running!=nullptr)
 	{
 		if (psh->migrate(Running, FCFS))
@@ -59,16 +59,12 @@ void peek(Process* p)
 			Running->incrementexcuted();
 			if (Running->getexcuted() == Running->getCpuTime())
 			{
-
-				Running->setTermination(psh->gettime());
-				psh->addtoTRM(Running);
-				Running = nullptr;
+				psh->Completed(Running);
 
 			}
 			else if (Running->needio() != -1)
 			{
 				psh->IOHandling(Running);
-				Running = nullptr;
 			}
 		}
 	}
