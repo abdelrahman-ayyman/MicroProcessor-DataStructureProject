@@ -274,7 +274,7 @@ void Scheduler:: addtoBLK(Process*p)
 					fileinput >> second;
 					fileinput.ignore();
 					
-					a->setPair(first, second, i);
+					a->setPair(first, second);
 				}
 				NEWlist.enqueue(a);
 				
@@ -394,7 +394,7 @@ void Scheduler:: addtoBLK(Process*p)
 	void Scheduler::IOHandling(Process*& run)
 	{
 
-		int x = run->needio() + timestep;;
+		int x = run->needio() + timestep;
 		run->setIOneeded(x);
 		addtoBLK(run);
 		run = nullptr;
@@ -405,7 +405,7 @@ void Scheduler:: addtoBLK(Process*p)
 	{
 		Process* blk;
 		
-		BLKlist.dequeue(blk);
+		BLKlist.peek(blk);
 		if (blk == nullptr)
 		{
 			return;
@@ -415,6 +415,10 @@ void Scheduler:: addtoBLK(Process*p)
 			int iodone = blk->getIOneeded();
 			if (iodone <= timestep)
 			{
+				BLKlist.dequeue(blk);
+				Process* newblk;
+				BLKlist.peek(newblk);
+				newblk->setIOneeded(newblk->getIOneeded() + timestep);
 				Assign(blk);
 			}
 			else
@@ -437,11 +441,10 @@ void Scheduler:: addtoBLK(Process*p)
 
 	void Scheduler::Assign(Process * p)
 	{
-		
-		if (!NEWlist.isEmpty())
-		{
+	
+	
 			int minindex = checkAvailability();
 			pros[minindex]->addprocess(p);
-		}
+		
 	}
 

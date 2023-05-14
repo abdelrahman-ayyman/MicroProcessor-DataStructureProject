@@ -2,6 +2,7 @@
 #include<iostream>
 #include"defs.h"
 #include "Pairs.h"
+#include "LinkedQueue.h"
 using namespace std;
 
 
@@ -19,7 +20,8 @@ int CpuTime;
 int totalexcuted;
 int IOneeded;
 int IOcount;
-Pairs* IOprocess;
+
+LinkedQueue<Pairs> IOprocess;
 //very important! Node* IOlist;
 //Node*child; bool isparent;
 
@@ -43,7 +45,6 @@ public:
 		ArrivalTime=arrival;
 		CpuTime=runtime;
 		IOcount=IOnum;
-		IOprocess = new Pairs[IOcount];
 		totalexcuted = 0;
 		forked = false;
 		FirstResponse = -1;
@@ -125,9 +126,9 @@ public:
 		return totalexcuted;
 	}
 
-	void setPair(int f, int s, int num)
+	void setPair(int f, int s)
 	{
-		IOprocess[num] = Pairs (f, s);
+		IOprocess.enqueue(Pairs(f, s));
 	}
 
 	int getRemainingTime()
@@ -137,11 +138,15 @@ public:
 
 	int needio()
 	{
-		for(int i=0;i<IOcount;i++)
+		if (!IOprocess.isEmpty())
 		{
-			if(totalexcuted==IOprocess[i].getfirst())
+			Pairs p;
+			IOprocess.peek(p);
+
+			if (totalexcuted == p.getfirst())
 			{
-				return IOprocess[i].getsecond();
+				IOprocess.dequeue(p);
+				return p.getsecond();
 			}
 		}
 
@@ -160,7 +165,6 @@ public:
 	
 	~Process(void)
 	{
-		delete IOprocess;
 	}
 
 
