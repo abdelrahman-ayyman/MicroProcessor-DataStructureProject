@@ -12,3 +12,8 @@
 /.vs/Project1/v17/Solution.VC.db-wal
 *.vsidx
 /.vs/Project1/FileContentIndex/e80c7e24-2a8f-4f29-a726-68fd14dcf91c.vsidx
+/Debug/Project1.exe
+/.vs/Project1/FileContentIndex/read.lock
+/Debug/testDS.exe
+/Debug/Project1.pdb
+/Debug/testDS.pdb
