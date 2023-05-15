@@ -34,17 +34,17 @@ void peek(Process* p)
 {
 	rdylist.print();
 }
- bool removebyid(int id,Process*&p)
- {
- bool a=rdylist.removeid(id,p);
- if(a)
- {
-	 readynum--;
-	 return true;
- }
- return false;
- }
 
+ bool removebyid(int id, Process*& p)
+ {
+	 bool a = rdylist.removeid(id, p);
+	 if (a)
+	 {
+		 readynum--;
+		 return true;
+	 }
+	 return false;
+ }
 
  void ScheduleAlgo()
 {
@@ -103,6 +103,15 @@ int  gettotalreq()
  
  }
 
+ /*bool FindProcessByPID(int id)
+ {
+	 if (Running->getID() == id)
+		 return Running;
+	 while(rdylist.isEmpty()!=false)
+	 {
+
+	 }
+ }*/
 
  void storeForked(Process* p)
  {

@@ -18,7 +18,7 @@ int PID;
 int ArrivalTime;
 int CpuTime;
 int totalexcuted;
-int IOneeded;
+int IOneeded ;
 int IOcount;
 
 LinkedQueue<Pairs> IOprocess;

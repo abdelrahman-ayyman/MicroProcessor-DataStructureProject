@@ -128,7 +128,7 @@ char* getType() const
 	}
 	return "RR";
 }
+//virtual bool FindProcessByPID(int id);
 
-
-
+virtual bool removebyid(int id, Process*& p)=0;
 };

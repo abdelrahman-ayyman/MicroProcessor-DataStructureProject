@@ -84,12 +84,15 @@ public:
 	bool removeBLK(Process*&);
 	void Load();
 	Scheduler();
-	//Start of Forking Functions:
+	// Start of Forking Functions:
 	bool TestingProbability(double Probability);
 	bool CanForkChild(Process* Process);
 	void forkChild(Process* Process);
 	Processor* findShortestRdyList();
-	//
+	// end of Forking Functions
+	// Start of Kill signal and kill orphans Functions
+	void KillSignal();
+	// end of Kill signal and kill orphans Functions
 	void IOHandling(Process*& run);
 	void CheckBlock();
 	void Completed(Process*&run);

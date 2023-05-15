@@ -362,58 +362,84 @@ void Scheduler:: addtoBLK(Process*p)
 	return s;
 }
 
-	/*
+	
 	//Start of Forking Functions:
-	bool Scheduler::CanForkChild(Process* Process)
-	{
-		bool canFork;
-		//test for running,forked before or not,FCFS or not
-		if (Process->getProcessState() == RUN )
-			canFork = true;
-		if (Process->getForkedBefore() == true)
-			canFork = false;
-		if(P)
-		return canFork;
-	}
-	bool Scheduler::TestingProbability(double Probability)
-	{
-		double randNum = ((rand() % 100)+1);
-		if (randNum <= Probability)
-			return true;
-		else
-			return false;
-    }
+	//bool Scheduler::CanForkChild(Process* Process)
+	//{
+	//	bool canFork;
+	//	//test for running,forked before or not,FCFS or not
+	//	if (Process->getProcessState() == RUN )
+	//		canFork = true;
+	//	if (Process->getForkedBefore() == true)
+	//		canFork = false;
+	//	
+	//	return canFork;
+	//}
+	//bool Scheduler::TestingProbability(double Probability)
+	//{
+	//	double randNum = ((rand() % 100)+1);
+	//	if (randNum <= Probability)
+	//		return true;
+	//	else
+	//		return false;
+ //   }
 
-	void Scheduler::forkChild(Process* process)
-	{
-		processnum++;
-		int ID = processnum;
-		int AT = timestep;
-		//remaing cpu time of parent done
-		int CT = process->getRemainingTime();
-		//add to children list
-		Process* child = new Process(ID, AT, CT);
-		//add to shortest list
-		process->setForkedBefore();
-	}
+	//void Scheduler::forkChild(Process* process)
+	//{
+	//	processnum++;
+	//	int ID = processnum;
+	//	int AT = timestep;
+	//	//remaing cpu time of parent done
+	//	int CT = process->getRemainingTime();
+	//	//add to children list
+	//	Process* child = new Process(ID, AT, CT);
+	//	//add to shortest list
+	//	process->setForkedBefore();
+	//}
 
-	Processor* Scheduler::findShortestRdyList()
+	//Processor* Scheduler::findShortestRdyList()
+	//{
+	//	int shortestTime = 999999999;
+	//	Processor* shortestProcessor;
+	//	for (int i = 0; i < Processorsnum; i++)
+	//	{
+	//		if (pros[i]->getType() == "FCFS")
+	//		{
+	//			if (arr[i]->sumCpu() < shortesttime)
+	//				shortesttime = arr[i]->sumCpu();
+	//			shoertestprocessor = arr[i];
+	//		}
+	//	}
+	//	return shoertestprocessor;
+	//}
+
+	// end of Forking Functions
+	// Start of Kill signal and kill orphans Functions
+	void Scheduler:: KillSignal()
 	{
-		int shortestTime = 999999999;
-		Processor* shortestProcessor;
-		for (int i = 0; i < Processorsnum; i++)
+		Pairs Killsignal;
+		Pairs deleted;
+		Sigkilllist.peek(Killsignal);
+		int KillTime = Killsignal.getfirst();
+		int PID = Killsignal.getsecond();
+		if (timestep == KillTime)
 		{
-			if (pros[i]->getProssesorName() == "fCFS")
+			bool found;
+			for (int i = 0; i < Processorsnum; i++)
 			{
-				if (arr[i]->sumCpu() < shortesttime)
-					shortesttime = arr[i]->sumCpu();
-				shoertestprocessor = arr[i];
+				if (pros[i]->getType() == "FCFS")
+				{
+					Process* Processptr;
+					pros[i]->removebyid(PID, Processptr);
+					addtoTRM(Processptr);
+				}
 			}
+			if(found)
+			    Sigkilllist.dequeue(deleted);
 		}
-		return shoertestprocessor;
-	}*/
 
-
+	}
+	// end of Kill signal and kill orphans Functions
 	///////Start of io handling
 	void Scheduler::IOHandling(Process*& run)
 	{
@@ -429,25 +455,29 @@ void Scheduler:: addtoBLK(Process*p)
 	{
 		Process* blk;
 		
-		BLKlist.peek(blk);
-		if (blk == nullptr)
+		bool b = BLKlist.peek(blk);
+
+		if (!b)
 		{
 			return;
 		}
 		else
 		{
-			int iodone = blk->getIOneeded();
-			if (iodone <= timestep)
+			if (!b)
 			{
-				BLKlist.dequeue(blk);
-				Process* newblk;
-				BLKlist.peek(newblk);
-				newblk->setIOneeded(newblk->getIOneeded() + timestep);
-				Assign(blk);
-			}
-			else
-			{
-				return;
+				int iodone = blk->getIOneeded();
+				if (iodone <= timestep)
+				{
+					BLKlist.dequeue(blk);
+					Process* newblk;
+					BLKlist.peek(newblk);
+					newblk->setIOneeded(newblk->getIOneeded() + timestep);
+					Assign(blk);
+				}
+				else
+				{
+					return;
+				}
 			}
 		}
 	}

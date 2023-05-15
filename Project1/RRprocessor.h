@@ -120,6 +120,11 @@ Process* dequeueprocess()
  
  }
 
+ bool removebyid(int id, Process*& p)
+ {
+	 return false;
+ }
+
  void storeForked(Process* p)
  {
 	 Process* q;
