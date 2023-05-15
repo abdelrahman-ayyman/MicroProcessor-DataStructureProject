@@ -138,10 +138,11 @@ Process* dequeueprocess()
 
  void restoreForked()
  {
-	 Process* p = nullptr;
-	 while (p = this->dequeueprocess())
+	 Process* p = this->dequeueprocess();
+	 while (p)
 	 {
 		 temp.enqueue(p);
+		 p = this->dequeueprocess();
 	 }
 
 	 while (!temp.isEmpty())
