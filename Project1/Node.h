@@ -31,9 +31,7 @@ Node<T>::Node( const T& r_Item)
 	next = nullptr;
 } 
 
-//mmmm hvl
-//knjkj
-//hvv
+
 template < typename T>
 Node<T>::Node( const T& r_Item, Node<T>* nextNodePtr)
 {
