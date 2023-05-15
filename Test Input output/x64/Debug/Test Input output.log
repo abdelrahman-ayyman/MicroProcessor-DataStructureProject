@@ -1,0 +1,4 @@
+﻿  Source.cpp
+C:\Users\hp\Desktop\Data Structure Project\1. PH2\Test Input output\Source.cpp(4,13): warning C4326: return type of 'main' should be 'int' instead of 'void'
+C:\Users\hp\Desktop\Data Structure Project\1. PH2\Test Input output\Source.cpp(5,36): warning C4101: 'Processorsnum': unreferenced local variable
+  Test Input output.vcxproj -> C:\Users\hp\Desktop\Data Structure Project\1. PH2\x64\Debug\Test Input output.exe

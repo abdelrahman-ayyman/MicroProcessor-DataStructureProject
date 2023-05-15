@@ -20,7 +20,7 @@ int CpuTime;
 int totalexcuted;
 int IOneeded ;
 int IOcount;
-
+int firsttimeCPU;
 LinkedQueue<Pairs> IOprocess;
 //very important! Node* IOlist;
 //Node*child; bool isparent;
@@ -31,6 +31,7 @@ int TerminationTime;
 int FirstResponse;
 int TRT;
 int WT; 
+int TotalIOD;
 
 /**/
 ProcessState State;
@@ -162,7 +163,23 @@ public:
 		forkedBefore = true;
 	}
 
-	
+	void incrementIOD(int IOD)
+	{
+		TotalIOD += IOD;
+	}
+	int getTotalIOD()
+	{
+		return TotalIOD;
+	}
+
+	void setfirsttimeCPU(int CPU)
+	{
+		firsttimeCPU = CPU;
+	}
+	int getfirsttimeCPU()
+	{
+		return firsttimeCPU;
+	}
 	~Process(void)
 	{
 	}

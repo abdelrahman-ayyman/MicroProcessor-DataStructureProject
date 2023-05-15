@@ -59,6 +59,8 @@ void Scheduler::Assign()
 		{
 			NEWlist.dequeue(q);
 			//VI
+			q->setfirsttimeCPU(gettime());
+
 			int minindex = checkAvailability();
 			pros[minindex]->addprocess(q);	
 		}
@@ -443,7 +445,7 @@ void Scheduler:: addtoBLK(Process*p)
 	///////Start of io handling
 	void Scheduler::IOHandling(Process*& run)
 	{
-
+		run->incrementIOD(run->needio());
 		int x = run->needio() + timestep;
 		run->setIOneeded(x);
 		addtoBLK(run);
@@ -457,12 +459,6 @@ void Scheduler:: addtoBLK(Process*p)
 		
 		bool b = BLKlist.peek(blk);
 
-		if (!b)
-		{
-			return;
-		}
-		else
-		{
 			if (!b)
 			{
 				int iodone = blk->getIOneeded();
@@ -479,7 +475,11 @@ void Scheduler:: addtoBLK(Process*p)
 					return;
 				}
 			}
-		}
+			else
+			{
+				return;
+			}
+		
 	}
 
 	//Completion//
@@ -502,3 +502,28 @@ void Scheduler:: addtoBLK(Process*p)
 		
 	}
 
+	void Scheduler::OutputFile()
+	{
+
+		ofstream Outputfile("OutPutFile.txt");
+		Process* p;
+
+		Outputfile << "TT" << "\t" << "PID" << "\t" << "AT" << "\t" << "CT" << "\t" << "IO_D" << "\t" << "WT" << "\t" << "RT" << "\t" << "TRT" << endl;
+
+		while (TRMlist.dequeue(p))
+		{
+			Outputfile << p->getTermination() << "\t";
+			Outputfile << p->getID() << "\t";
+			Outputfile << p->getArrivalTime() << "\t";
+			Outputfile << p->getCpuTime() << "\t";
+			Outputfile << (p->getTermination() - p->getArrivalTime()) - p->getCpuTime() << "\t";
+			Outputfile << p->getArrivalTime() - p->getfirsttimeCPU() << "\t";
+			Outputfile << (p->getTermination() - p->getArrivalTime()) << endl;
+
+		}
+		
+		Outputfile << "Processes: " << getprocessnum() << endl;
+
+
+		Outputfile.close();
+	}

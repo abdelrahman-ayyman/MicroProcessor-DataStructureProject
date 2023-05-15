@@ -96,5 +96,6 @@ public:
 	void IOHandling(Process*& run);
 	void CheckBlock();
 	void Completed(Process*&run);
+	void OutputFile();
 };
 
