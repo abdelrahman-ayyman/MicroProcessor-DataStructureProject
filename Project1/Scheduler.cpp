@@ -431,25 +431,29 @@ void Scheduler:: addtoBLK(Process*p)
 	{
 		Process* blk;
 		
-		BLKlist.peek(blk);
-		if (blk == nullptr)
+		bool b = BLKlist.peek(blk);
+
+		if (!b)
 		{
 			return;
 		}
 		else
 		{
-			int iodone = blk->getIOneeded();
-			if (iodone <= timestep)
+			if (!b)
 			{
-				BLKlist.dequeue(blk);
-				Process* newblk;
-				BLKlist.peek(newblk);
-				newblk->setIOneeded(newblk->getIOneeded() + timestep);
-				Assign(blk);
-			}
-			else
-			{
-				return;
+				int iodone = blk->getIOneeded();
+				if (iodone <= timestep)
+				{
+					BLKlist.dequeue(blk);
+					Process* newblk;
+					BLKlist.peek(newblk);
+					newblk->setIOneeded(newblk->getIOneeded() + timestep);
+					Assign(blk);
+				}
+				else
+				{
+					return;
+				}
 			}
 		}
 	}
