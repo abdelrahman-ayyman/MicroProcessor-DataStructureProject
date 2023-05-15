@@ -112,6 +112,10 @@ virtual void printRdyList()
 	//rdylist.print();
 }
 
+virtual void storeForked(Process* p) = 0;
+
+virtual void restoreForked() = 0;
+
 char* getType() const
 {
 	if (Type == FCFS)

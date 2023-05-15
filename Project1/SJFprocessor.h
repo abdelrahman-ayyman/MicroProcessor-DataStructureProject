@@ -8,6 +8,7 @@ class SJFprocessor:public Processor
 {
 private:
 	SJQueue rdylist;
+	SJQueue temp;
 public:
 SJFprocessor(Scheduler* sh):Processor(sh)
 {
@@ -103,4 +104,33 @@ bool removebyid(int id, Process*& p)
 {
 	return false;
 }
+
+void storeForked(Process* p)
+{
+	Process* q;
+
+	this->dequeueprocess();
+	temp.enqueue(p);
+	this->peek(q);
+	if (q && q->getForked())
+		storeForked(q);
+}
+
+void restoreForked()
+{
+	Process* p = this->dequeueprocess();
+	while (p)
+	{
+		temp.enqueue(p);
+		p = this->dequeueprocess();
+	}
+
+	while (!temp.isEmpty())
+	{
+		temp.dequeue(p);
+		this->addprocess(p);
+	}
+}
+
+
 };
