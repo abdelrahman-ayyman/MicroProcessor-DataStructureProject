@@ -123,7 +123,6 @@ void Scheduler::workSteal()
 		pros[longestQueue]->gettotalreq() <= .4
 		)
 	{
-		// Check the case of forked processes
 		Process* p;
 		pros[longestQueue]->peek(p);
 
