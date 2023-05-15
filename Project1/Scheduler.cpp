@@ -104,8 +104,7 @@ void Scheduler::workSteal()
 	{
 		int requiredTime = pros[i]->gettotalreq();
 
-		if (requiredTime < pros[shortestQueue]->gettotalreq() 
-			|| (pros[i]->getrunning() == nullptr && pros[i]->getReadyNum() == 0))
+		if (requiredTime < pros[shortestQueue]->gettotalreq())
 		{
 			shortestQueue = i;
 		}
@@ -116,6 +115,9 @@ void Scheduler::workSteal()
 		}
 	}
 
+	if (shortestQueue == longestQueue || pros[longestQueue]->gettotalreq() == 0)
+		return;
+
 	while (
 		(pros[longestQueue]->gettotalreq() - pros[shortestQueue]->gettotalreq()) /
 		pros[longestQueue]->gettotalreq() <= .4
@@ -124,11 +126,34 @@ void Scheduler::workSteal()
 		// Check the case of forked processes
 		Process* p;
 		pros[longestQueue]->peek(p);
-		if (p->getForked())
-			break;
 
-		pros[longestQueue]->dequeueprocess();
-		pros[shortestQueue]->addprocess(p);
+		if (p && p->getForked())
+		{
+			pros[longestQueue]->storeForked(p);
+			bool onlyForked = false;
+
+			if (pros[longestQueue]->gettotalreq() == 0)
+				onlyForked = true;
+
+			if (onlyForked == true)
+			{
+				pros[longestQueue]->restoreForked();
+				break;
+			}
+			else
+			{
+				pros[longestQueue]->dequeueprocess();
+				pros[shortestQueue]->addprocess(p);
+
+				pros[longestQueue]->restoreForked();
+			}
+
+		}
+		else
+		{
+			pros[longestQueue]->dequeueprocess();
+			pros[shortestQueue]->addprocess(p);
+		}
 
 		p = nullptr;
 	}

@@ -8,6 +8,7 @@ class SJFprocessor:public Processor
 {
 private:
 	SJQueue rdylist;
+	SJQueue temp;
 public:
 SJFprocessor(Scheduler* sh):Processor(sh)
 {
@@ -97,6 +98,33 @@ Process* dequeueprocess()
 	rdylist.totalreqtime-=p->getCpuTime()-p->getexcuted();
 	readynum--;
 	return p;
+}
+
+
+void storeForked(Process* p)
+{
+	Process* q;
+
+	this->dequeueprocess();
+	temp.enqueue(p);
+	this->peek(q);
+	if (q && q->getForked())
+		storeForked(q);
+}
+
+void restoreForked()
+{
+	Process* p = nullptr;
+	while (p = this->dequeueprocess())
+	{
+		temp.enqueue(p);
+	}
+
+	while (!temp.isEmpty())
+	{
+		temp.dequeue(p);
+		this->addprocess(p);
+	}
 }
 
 

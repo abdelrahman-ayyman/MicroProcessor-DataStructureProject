@@ -8,6 +8,7 @@ class FCFSprocessor:public Processor
 {
 private:
 	ProcessLinkedlist rdylist;
+	ProcessLinkedlist temp;
 public:
 FCFSprocessor(Scheduler* sh):Processor(sh)
 {
@@ -102,6 +103,32 @@ int  gettotalreq()
  
  }
 
+
+ void storeForked(Process* p)
+ {
+	 Process* q;
+
+	 this->dequeueprocess();
+	 temp.insertlast(p);
+	 this->peek(q);
+	 if (q && q->getForked())
+		 storeForked(q);
+ }
+
+ void restoreForked()
+ {
+	 Process* p = nullptr;
+	 while (p = this->dequeueprocess())
+	 {
+		 temp.insertlast(p);
+	 }
+
+	 while (!temp.isEmpty())
+	 {
+		 temp.removefirst(p);
+		 this->addprocess(p);
+	 }
+ }
 
 
 };
