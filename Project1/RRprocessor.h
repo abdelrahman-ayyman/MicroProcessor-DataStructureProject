@@ -119,7 +119,10 @@ Process* dequeueprocess()
  return rdylist.totalreqtime;
  
  }
-
+ bool removebyid(int id, Process*& p)
+ {
+	 return false;
+ }
 
 
 };

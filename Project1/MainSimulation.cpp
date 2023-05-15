@@ -25,6 +25,7 @@ int main()
 		sh.counterup();
 		if (sh.gettime() % sh.getSTL() == 0)
 			sh.workSteal();
+		//sh.KillSignal();
 	//getchar();
 	}
 
