@@ -4,6 +4,6 @@ C:\Users\abd elrahman\OneDrive\Desktop\final\Project1\Scheduler.cpp(12,29): warn
 C:\Users\abd elrahman\OneDrive\Desktop\final\Project1\Scheduler.cpp(12,12): warning C4309: 'initializing': truncation of constant value
 C:\Users\abd elrahman\OneDrive\Desktop\final\Project1\Scheduler.cpp(133): warning C4700: uninitialized local variable 'p' used
 C:\Users\abd elrahman\OneDrive\Desktop\final\Project1\FCFSprocessor.h(123): warning C4700: uninitialized local variable 'q' used
-C:\Users\abd elrahman\OneDrive\Desktop\final\Project1\RRprocessor.h(134): warning C4700: uninitialized local variable 'q' used
 C:\Users\abd elrahman\OneDrive\Desktop\final\Project1\SJFprocessor.h(114): warning C4700: uninitialized local variable 'q' used
+C:\Users\abd elrahman\OneDrive\Desktop\final\Project1\RRprocessor.h(134): warning C4700: uninitialized local variable 'q' used
   Project1.vcxproj -> C:\Users\abd elrahman\OneDrive\Desktop\final\Debug\Project1.exe

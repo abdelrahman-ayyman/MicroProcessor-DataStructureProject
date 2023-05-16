@@ -278,7 +278,7 @@ void Scheduler:: addtoBLK(Process*p)
 
 	void Scheduler::Load()
 	{
-		ifstream fileinput("newtesting.txt");
+		ifstream fileinput("bigtest.txt");
 
 		if (fileinput.is_open())
 		{
@@ -431,13 +431,17 @@ void Scheduler:: addtoBLK(Process*p)
 	// Start of Kill signal and kill orphans Functions
 	void Scheduler:: KillSignal()
 	{
+		cout << endl << endl;
 		Pairs Killsignal;
 		Pairs deleted;
 		Sigkilllist.peek(Killsignal);
 		int KillTime = Killsignal.getfirst();
 		int PID = Killsignal.getsecond();
+		cout << "id=" << PID<<endl;
+		cout << "time=" << KillTime << endl;
 		if (timestep == KillTime)
 		{
+			cout << "entered" << endl;
 			bool found=false;
 			for (int i = 0; i < Processorsnum; i++)
 			{
@@ -445,6 +449,7 @@ void Scheduler:: addtoBLK(Process*p)
 				{
 					Process* Processptr;
 					pros[i]->removebyid(PID, Processptr);
+					//cout <<"id found"<< Processptr->getID() << endl;
 					addtoTRM(Processptr);
 					found = true;
 				}
