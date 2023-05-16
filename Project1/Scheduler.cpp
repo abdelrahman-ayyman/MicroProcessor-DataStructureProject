@@ -186,69 +186,76 @@ Scheduler::Scheduler()
 
 void Scheduler::printpros()
 {
-	Window.print("Current timestep:");
-	Window.print(timestep);
-	Window.print("\n");
-
-	Window.print("-----------------     RDY Processes     -----------------");
-	Window.print("\n");
-
-	int runCount = 0;
-
-	for (int i = 0; i < Processorsnum; i++)
+	if (Window.getMode() != SILENT_MODE)
 	{
-		Window.print("processor ");Window.print(i + 1);
-		Window.print(" [");Window.print(pros[i]->getType());Window.print("] : ");
+		Window.print("Current timestep:");
+		Window.print(timestep);
+		Window.print("\n");
 
-		Window.print(pros[i]->getReadyNum()); 
-		
-		
-		Window.print(" ");
-		
-		if (pros[i]->getReadyNum() != 0)
-		{
-			Window.print("process: ");
-			pros[i]->printRdyList();
-		}
+		Window.print("-----------------     RDY Processes     -----------------");
+		Window.print("\n");
 
-		if (pros[i]->getrunning() != nullptr)
+		int runCount = 0;
+
+		for (int i = 0; i < Processorsnum; i++)
 		{
-			runCount++;
+			Window.print("processor "); Window.print(i + 1);
+			Window.print(" ["); Window.print(pros[i]->getType()); Window.print("] : ");
+
+			Window.print(pros[i]->getReadyNum());
+
+
+			Window.print(" ");
+
+			if (pros[i]->getReadyNum() != 0)
+			{
+				Window.print("process: ");
+				pros[i]->printRdyList();
+			}
+
+			if (pros[i]->getrunning() != nullptr)
+			{
+				runCount++;
+			}
+			cout << endl;
 		}
-		cout << endl;
+		// Print processors: ID - Scheduling algorithm - numOfProcesses - processesID
+		Window.print("-----------------     BLK Processes     -----------------");
+		Window.print("\n");
+		Window.print(BLKcount);
+		Window.print(" BLK: "); // numOfProcesses - processesID
+		BLKlist.print();
+		Window.print("\n");
+
+		Window.print("-----------------     RUN Processes     -----------------");
+		Window.print("\n");
+
+		Window.print(runCount);
+		Window.print(" RUN: ");
+		for (int i = 0; i < Processorsnum; i++)
+		{
+			if (pros[i]->getrunning() != nullptr)
+			{
+				Window.print(pros[i]->getrunning()->getID());
+				Window.print("(P"); Window.print(i + 1); Window.print(") ");
+			}
+		}
+		Window.print("\n");
+
+		Window.print("-----------------     TRM Processes     -----------------");
+		Window.print("\n");
+		Window.print(TRMcount);
+		Window.print(" TRM: "); // numOfProcesses - processesID
+
+		TRMlist.print();
+		Window.print("\n");
+		Window.printMode();
 	}
-	// Print processors: ID - Scheduling algorithm - numOfProcesses - processesID
-	Window.print("-----------------     BLK Processes     -----------------");
-	Window.print("\n");
-	Window.print(BLKcount);
-	Window.print(" BLK: "); // numOfProcesses - processesID
-	BLKlist.print();
-	Window.print("\n");
-
-	Window.print("-----------------     RUN Processes     -----------------");
-	Window.print("\n");
-
-	Window.print(runCount);
-	Window.print(" RUN: ");
-	for (int i = 0; i < Processorsnum; i++)
+	else if (TRMcount == processnum)
 	{
-		if (pros[i]->getrunning() != nullptr)
-		{
-			Window.print(pros[i]->getrunning()->getID());
-			Window.print("(P");Window.print(i+1);Window.print(") ");
-		}
+		Window.printMode();
 	}
-	Window.print("\n");
 
-	Window.print("-----------------     TRM Processes     -----------------");
-	Window.print("\n");
-	Window.print(TRMcount);
-	Window.print(" TRM: "); // numOfProcesses - processesID
-
-	TRMlist.print();
-	Window.print("\n");
-
-	Window.printMode();
 }
 
 void Scheduler:: addtoBLK(Process*p)
@@ -520,7 +527,7 @@ void Scheduler:: addtoBLK(Process*p)
 		int avgWT, avgRT, avgTRT;
 		int MigRTF, MigMaxW;
 		int workstealperc, forkperc, killperc;
-		int processorload, int processorutilization;
+		int processorload, processorutilization;
 		int avgUtilization;
 
 		Outputfile << "TT" << "\t" << "PID" << "\t" << "AT" << "\t" << "CT" << "\t" << "IO_D" << "\t" << "WT" << "\t" << "RT" << "\t" << "TRT" << endl;
