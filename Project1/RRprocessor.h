@@ -9,7 +9,7 @@ class RRprocessor:public Processor
 private:
 	int counterslice;
 	ProcessQueue rdylist;
-	ProcessQueue temp;
+	// ProcessQueue temp;
 
 public:
 	RRprocessor(Scheduler* sh):Processor(sh)
@@ -129,6 +129,7 @@ Process* dequeueprocess()
 
  void storeForked(Process* p)
  {
+	 /*
 	 Process* q;
 
 	 this->dequeueprocess();
@@ -136,10 +137,12 @@ Process* dequeueprocess()
 	 this->peek(q);
 	 if (q && q->getForked())
 		 storeForked(q);
+		*/
  }
 
  void restoreForked()
  {
+	 /*
 	 Process* p = this->dequeueprocess();
 	 while (p)
 	 {
@@ -152,6 +155,7 @@ Process* dequeueprocess()
 		 temp.dequeue(p);
 		 this->addprocess(p);
 	 }
+	 */
  }
 
  void incrementbusy()
