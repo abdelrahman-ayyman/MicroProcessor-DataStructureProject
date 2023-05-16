@@ -86,6 +86,7 @@ bool Scheduler::migrate(Process* p, ProcessorType Type)
 		{
 			int minindex = checkAvailability(SJF);
 			pros[minindex]->addprocess(p);
+			MigRTF++;
 			return true;
 		}
 	}
@@ -95,6 +96,7 @@ bool Scheduler::migrate(Process* p, ProcessorType Type)
 		{
 			int minindex = checkAvailability(RR);
 			pros[minindex]->addprocess(p);
+			MigMaxW++;
 			return true;
 		}
 	}
@@ -151,6 +153,7 @@ void Scheduler::workSteal()
 				pros[shortestQueue]->addprocess(p);
 
 				pros[longestQueue]->restoreForked();
+				workstealper++;
 			}
 
 		}
@@ -158,9 +161,14 @@ void Scheduler::workSteal()
 		{
 			pros[longestQueue]->dequeueprocess();
 			pros[shortestQueue]->addprocess(p);
+			workstealper++;
 		}
 
 		p = nullptr;
+
+		if (pros[longestQueue]->gettotalreq() == 0)
+			break;
+
 	}
 
 }
@@ -181,6 +189,9 @@ Scheduler::Scheduler()
 	timestep=1;
 	BLKcount=0;
 	TRMcount=0;
+	MigMaxW = 0;
+	MigRTF = 0;
+	workstealper = 0;
 }
 
 
