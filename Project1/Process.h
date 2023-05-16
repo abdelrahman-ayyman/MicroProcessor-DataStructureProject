@@ -25,7 +25,6 @@ LinkedQueue<Pairs> IOprocess;
 //very important! Node* IOlist;
 //Node*child; bool isparent;
 
-bool forked;
 bool forkedBefore;
 int TerminationTime;
 int FirstResponse;
@@ -83,11 +82,6 @@ public:
 		return IOneeded;
 	}
 
-	bool getForked()
-	{
-		return forked;
-	}
-
 	int getTermination()
 	{
 		return TerminationTime;
@@ -95,11 +89,6 @@ public:
 	ProcessState getProcessState()
 	{
 		return State;
-	}
-
-	bool setAsForked()
-	{
-		forked = true;
 	}
 
 	void setIOneeded(int x)

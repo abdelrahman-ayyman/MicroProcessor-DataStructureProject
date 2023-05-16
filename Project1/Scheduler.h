@@ -22,8 +22,9 @@ private:
 	UserInterface Window;
 	int fcfscount, sjfcount, rrcount, timeslice, rtf, maxW, stl;
 	double forkprob;
-	int MigRTF = 0, MigMaxW = 0;
-	int workstealperc = 0;
+
+	int MigRTF, MigMaxW, workstealper;
+	
 	
 	ProcessQueue NEWlist;
 	ProcessQueue BLKlist;

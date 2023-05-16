@@ -128,7 +128,7 @@ int  gettotalreq()
 	 this->dequeueprocess();
 	 temp.insertlast(p);
 	 this->peek(q);
-	 if (q && q->getForked())
+	 if (q && q->getForkedBefore())
 		 storeForked(q);
  }
 
