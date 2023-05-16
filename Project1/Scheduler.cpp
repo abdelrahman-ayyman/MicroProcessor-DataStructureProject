@@ -59,9 +59,13 @@ void Scheduler::Assign()
 		{
 			NEWlist.dequeue(q);
 			//VI
-			q->setfirsttimeCPU(gettime());
 
 			int minindex = checkAvailability();
+			if (minindex != -1 )
+			{
+
+				q->setfirsttimeCPU(gettime());
+			}
 			pros[minindex]->addprocess(q);	
 		}
 		else
@@ -267,7 +271,7 @@ void Scheduler:: addtoBLK(Process*p)
 
 	void Scheduler::Load()
 	{
-		ifstream fileinput("bigtest.txt");
+		ifstream fileinput("newtesting.txt");
 
 		if (fileinput.is_open())
 		{
@@ -511,6 +515,13 @@ void Scheduler:: addtoBLK(Process*p)
 
 		ofstream Outputfile("OutPutFile.txt");
 		Process* p;
+		int currentWT, currentRT, currentTRT;
+		int totalWT, totalRT, totalTRT =0;
+		int avgWT, avgRT, avgTRT;
+		int MigRTF, MigMaxW;
+		int workstealperc, forkperc, killperc;
+		int processorload, int processorutilization;
+		int avgUtilization;
 
 		Outputfile << "TT" << "\t" << "PID" << "\t" << "AT" << "\t" << "CT" << "\t" << "IO_D" << "\t" << "WT" << "\t" << "RT" << "\t" << "TRT" << endl;
 
@@ -520,14 +531,42 @@ void Scheduler:: addtoBLK(Process*p)
 			Outputfile << p->getID() << "\t";
 			Outputfile << p->getArrivalTime() << "\t";
 			Outputfile << p->getCpuTime() << "\t";
-			Outputfile << (p->getTermination() - p->getArrivalTime()) - p->getCpuTime() << "\t";
-			Outputfile << p->getArrivalTime() - p->getfirsttimeCPU() << "\t";
-			Outputfile << (p->getTermination() - p->getArrivalTime()) << endl;
+			Outputfile << p->getTotalIOD() << "\t";
+			currentWT = (p->getTermination() - p->getArrivalTime()) - p->getCpuTime();
+			Outputfile << currentWT << "\t";
+			totalWT += currentWT;
+			currentRT = p->getArrivalTime() - p->getfirsttimeCPU();
+			Outputfile << currentRT << "\t";
+			totalRT += currentRT;
+			currentTRT = p->getTermination() - p->getArrivalTime();
+			Outputfile << currentTRT << endl;
+			totalTRT += currentTRT;
 
 		}
-		
-		Outputfile << "Processes: " << getprocessnum() << endl;
-
+		int totalprocesses = getprocessnum();
+		Outputfile << "\n" << "Processes: " << totalprocesses << endl;
+		Outputfile << "avg WT = " << totalWT / totalprocesses << ",\t";
+		Outputfile << "avg RT = " << totalRT / totalprocesses << ",\t";
+		Outputfile << "avg TRT = " << totalTRT / totalprocesses << endl;
+		Outputfile << "Migration %:\t RTF= " << MigRTF / totalprocesses << "%,\t MaxW = " << MigMaxW / totalprocesses << "%" << endl;
+		Outputfile << "Work Steal %:" << workstealperc / totalprocesses << "%" << endl;
+		Outputfile << "Forked Process: " << forkperc / totalprocesses << "%" << endl;
+		Outputfile << "Killed Process: " << killperc / totalprocesses << "%" << endl << endl;
+		int totalprocessors = fcfscount + sjfcount + rrcount;
+		Outputfile << "Processors: " << totalprocessors << " [" << fcfscount << "FCFS, " << sjfcount << " SJF, " << rrcount << " RR]" << endl;
+		Outputfile << "Processors Load" << endl;
+		for (int i = 1; i <= totalprocessors; i++)
+		{
+			Outputfile << "p" << i << "=" << "%,\t";
+		}
+		Outputfile << endl << endl;
+		Outputfile << "Processors Utiliz" << endl;
+		for (int i = 1; i <= totalprocessors; i++)
+		{
+			Outputfile << "p" << i << "=" << "%,\t";
+		}
+		Outputfile << endl;
+		Outputfile << "Avg utilization = " << "%";
 
 		Outputfile.close();
 	}

@@ -28,7 +28,7 @@ int main()
 		//sh.KillSignal();
 	//getchar();
 	}
-
+	sh.OutputFile();
 	
 	
 	

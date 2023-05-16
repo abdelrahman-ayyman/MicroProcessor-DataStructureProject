@@ -53,6 +53,7 @@ public:
 		TRT = -1;
 		WT = -1;
 		forkedBefore = false;
+		TotalIOD = 0;
 	}
 	int getID()
 	{
@@ -166,7 +167,7 @@ public:
 
 	void incrementIOD(int IOD)
 	{
-		TotalIOD += IOD;
+		TotalIOD = TotalIOD + IOD;
 	}
 	int getTotalIOD()
 	{
