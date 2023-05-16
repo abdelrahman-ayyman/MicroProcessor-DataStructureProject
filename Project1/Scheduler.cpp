@@ -562,16 +562,16 @@ void Scheduler:: addtoBLK(Process*p)
 		Outputfile << "avg WT = " << totalWT / totalprocesses << ",\t";
 		Outputfile << "avg RT = " << totalRT / totalprocesses << ",\t";
 		Outputfile << "avg TRT = " << totalTRT / totalprocesses << endl;
-		Outputfile << "Migration %:\t RTF= " << MigRTF / totalprocesses << "%,\t MaxW = " << MigMaxW / totalprocesses << "%" << endl;
-		Outputfile << "Work Steal %:" << workstealperc / totalprocesses << "%" << endl;
-		Outputfile << "Forked Process: " << forkperc / totalprocesses << "%" << endl;
-		Outputfile << "Killed Process: " << killperc / totalprocesses << "%" << endl << endl;
+		Outputfile << "Migration %:\t RTF= " << ((float)MigRTF / totalprocesses)*100 << "%,\t MaxW = " << MigMaxW / totalprocesses << "%" << endl;
+		Outputfile << "Work Steal %:" << ((float)workstealper / totalprocesses)*100 << "%" << endl;
+		Outputfile << "Forked Process: " << ((float)forkperc / totalprocesses)*100 << "%" << endl;
+		Outputfile << "Killed Process: " << ((float)killperc / totalprocesses)*100 << "%" << endl << endl;
 		int totalprocessors = fcfscount + sjfcount + rrcount;
 		Outputfile << "Processors: " << totalprocessors << " [" << fcfscount << " FCFS, " << sjfcount << " SJF, " << rrcount << " RR]" << endl;
 		Outputfile << "Processors Load" << endl;
 		for (int i = 1; i <= totalprocessors; i++)
 		{
-			Outputfile << "p" << i  << "=" << (pros[i-1]->getbusy()) / (float)totalTRT << "%,\t";
+			Outputfile << "p" << i  << "=" << ((pros[i-1]->getbusy()) / (float)totalTRT)*100 << "%,\t";
 			
 		}
 		Outputfile << endl << endl;
@@ -582,7 +582,7 @@ void Scheduler:: addtoBLK(Process*p)
 		{
 			if (pros[i - 1]->getidle() != 0)
 			{
-				currut = ((float)(pros[i - 1]->getbusy()) / ((pros[i - 1]->getbusy()) + (pros[i - 1]->getidle())));
+				currut = ((float)(pros[i - 1]->getbusy()) / ((pros[i - 1]->getbusy()) + (pros[i - 1]->getidle())))*100;
 				
 				totalut += currut;
 			}

@@ -46,7 +46,7 @@ public:
 		CpuTime=runtime;
 		IOcount=IOnum;
 		totalexcuted = 0;
-		forked = false;
+		forkedBefore = false;
 		FirstResponse = -1;
 		TerminationTime = -1;
 		TRT = -1;
