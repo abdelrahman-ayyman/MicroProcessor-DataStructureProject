@@ -29,6 +29,12 @@ public:
 	{
 		cout << msg;
 	}
+
+	UI_MODE getMode()
+	{
+		return currentMode;
+	}
+
 	void printMode()
 	{
 		if (currentMode == INTERACTIVE_MODE)
@@ -42,7 +48,7 @@ public:
 		}
 		else if (currentMode == SILENT_MODE)
 		{
-			cout << "Silent Mode......			Simulation starts...\n Simulation ends, Output file created";
+			cout << "Silent Mode......			Simulation starts...\n Simulation ends, Output file created"<<endl;
 		}
 	}
 };

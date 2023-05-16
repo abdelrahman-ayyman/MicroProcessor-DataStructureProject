@@ -186,69 +186,76 @@ Scheduler::Scheduler()
 
 void Scheduler::printpros()
 {
-	Window.print("Current timestep:");
-	Window.print(timestep);
-	Window.print("\n");
-
-	Window.print("-----------------     RDY Processes     -----------------");
-	Window.print("\n");
-
-	int runCount = 0;
-
-	for (int i = 0; i < Processorsnum; i++)
+	if (Window.getMode() != SILENT_MODE)
 	{
-		Window.print("processor ");Window.print(i + 1);
-		Window.print(" [");Window.print(pros[i]->getType());Window.print("] : ");
+		Window.print("Current timestep:");
+		Window.print(timestep);
+		Window.print("\n");
 
-		Window.print(pros[i]->getReadyNum()); 
-		
-		
-		Window.print(" ");
-		
-		if (pros[i]->getReadyNum() != 0)
-		{
-			Window.print("process: ");
-			pros[i]->printRdyList();
-		}
+		Window.print("-----------------     RDY Processes     -----------------");
+		Window.print("\n");
 
-		if (pros[i]->getrunning() != nullptr)
+		int runCount = 0;
+
+		for (int i = 0; i < Processorsnum; i++)
 		{
-			runCount++;
+			Window.print("processor "); Window.print(i + 1);
+			Window.print(" ["); Window.print(pros[i]->getType()); Window.print("] : ");
+
+			Window.print(pros[i]->getReadyNum());
+
+
+			Window.print(" ");
+
+			if (pros[i]->getReadyNum() != 0)
+			{
+				Window.print("process: ");
+				pros[i]->printRdyList();
+			}
+
+			if (pros[i]->getrunning() != nullptr)
+			{
+				runCount++;
+			}
+			cout << endl;
 		}
-		cout << endl;
+		// Print processors: ID - Scheduling algorithm - numOfProcesses - processesID
+		Window.print("-----------------     BLK Processes     -----------------");
+		Window.print("\n");
+		Window.print(BLKcount);
+		Window.print(" BLK: "); // numOfProcesses - processesID
+		BLKlist.print();
+		Window.print("\n");
+
+		Window.print("-----------------     RUN Processes     -----------------");
+		Window.print("\n");
+
+		Window.print(runCount);
+		Window.print(" RUN: ");
+		for (int i = 0; i < Processorsnum; i++)
+		{
+			if (pros[i]->getrunning() != nullptr)
+			{
+				Window.print(pros[i]->getrunning()->getID());
+				Window.print("(P"); Window.print(i + 1); Window.print(") ");
+			}
+		}
+		Window.print("\n");
+
+		Window.print("-----------------     TRM Processes     -----------------");
+		Window.print("\n");
+		Window.print(TRMcount);
+		Window.print(" TRM: "); // numOfProcesses - processesID
+
+		TRMlist.print();
+		Window.print("\n");
+		Window.printMode();
 	}
-	// Print processors: ID - Scheduling algorithm - numOfProcesses - processesID
-	Window.print("-----------------     BLK Processes     -----------------");
-	Window.print("\n");
-	Window.print(BLKcount);
-	Window.print(" BLK: "); // numOfProcesses - processesID
-	BLKlist.print();
-	Window.print("\n");
-
-	Window.print("-----------------     RUN Processes     -----------------");
-	Window.print("\n");
-
-	Window.print(runCount);
-	Window.print(" RUN: ");
-	for (int i = 0; i < Processorsnum; i++)
+	else if (TRMcount == processnum)
 	{
-		if (pros[i]->getrunning() != nullptr)
-		{
-			Window.print(pros[i]->getrunning()->getID());
-			Window.print("(P");Window.print(i+1);Window.print(") ");
-		}
+		Window.printMode();
 	}
-	Window.print("\n");
 
-	Window.print("-----------------     TRM Processes     -----------------");
-	Window.print("\n");
-	Window.print(TRMcount);
-	Window.print(" TRM: "); // numOfProcesses - processesID
-
-	TRMlist.print();
-	Window.print("\n");
-
-	Window.printMode();
 }
 
 void Scheduler:: addtoBLK(Process*p)
@@ -370,54 +377,54 @@ void Scheduler:: addtoBLK(Process*p)
 
 	
 	//Start of Forking Functions:
-	//bool Scheduler::CanForkChild(Process* Process)
-	//{
-	//	bool canFork;
-	//	//test for running,forked before or not,FCFS or not
-	//	if (Process->getProcessState() == RUN )
-	//		canFork = true;
-	//	if (Process->getForkedBefore() == true)
-	//		canFork = false;
-	//	
-	//	return canFork;
-	//}
-	//bool Scheduler::TestingProbability(double Probability)
-	//{
-	//	double randNum = ((rand() % 100)+1);
-	//	if (randNum <= Probability)
-	//		return true;
-	//	else
-	//		return false;
- //   }
+	bool Scheduler::CanForkChild(Process* Process)
+	{
+		bool canFork;
+		//test for running,forked before or not,FCFS or not
+		if (Process->getProcessState() == RUN )
+			canFork = true;
+		if (Process->getForkedBefore() == true)
+			canFork = false;
+		if(Process->)
+		return canFork;
+	}
+	bool Scheduler::TestingProbability(double Probability)
+	{
+		double randNum = ((rand() % 100)+1);
+		if (randNum <= Probability)
+			return true;
+		else
+			return false;
+    }
 
-	//void Scheduler::forkChild(Process* process)
-	//{
-	//	processnum++;
-	//	int ID = processnum;
-	//	int AT = timestep;
-	//	//remaing cpu time of parent done
-	//	int CT = process->getRemainingTime();
-	//	//add to children list
-	//	Process* child = new Process(ID, AT, CT);
-	//	//add to shortest list
-	//	process->setForkedBefore();
-	//}
+	void Scheduler::forkChild(Process* process)
+	{
+		processnum++;
+		int ID = processnum;
+		int AT = timestep;
+		//remaing cpu time of parent done
+		int CT = process->getRemainingTime();
+		//add to children list
+		Process* child = new Process(ID, AT, CT);
+		//add to shortest list
+		process->setForkedBefore();
+	}
 
-	//Processor* Scheduler::findShortestRdyList()
-	//{
-	//	int shortestTime = 999999999;
-	//	Processor* shortestProcessor;
-	//	for (int i = 0; i < Processorsnum; i++)
-	//	{
-	//		if (pros[i]->getType() == "FCFS")
-	//		{
-	//			if (arr[i]->sumCpu() < shortesttime)
-	//				shortesttime = arr[i]->sumCpu();
-	//			shoertestprocessor = arr[i];
-	//		}
-	//	}
-	//	return shoertestprocessor;
-	//}
+	Processor* Scheduler::findShortestRdyList()
+	{
+		int shortestTime = 999999999;
+		Processor* shortestProcessor;
+		for (int i = 0; i < Processorsnum; i++)
+		{
+			if (pros[i]->getType() == "FCFS")
+			{
+				if (arr[i]->sumCpu() < shortesttime)
+					shortesttime = arr[i]->sumCpu();
+				shoertestprocessor = arr[i];
+			}
+		}
+		return shoertestprocessor;
+	}
 
 	// end of Forking Functions
 	// Start of Kill signal and kill orphans Functions
