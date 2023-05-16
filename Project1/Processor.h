@@ -19,7 +19,8 @@ ProcessorType Type;
 
 Process* Running;
 int neededio;
-
+int busytime=0;
+int idletime = 0;
 public:
 
 	int readynum;
@@ -132,4 +133,9 @@ char* getType() const
 //virtual bool FindProcessByPID(int id);
 
 virtual bool removebyid(int id, Process*& p)=0;
+
+virtual void incrementbusy() = 0;
+virtual int getbusy() = 0;
+virtual void incrementidle() = 0;
+virtual int getidle() = 0;
 };
