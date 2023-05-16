@@ -141,5 +141,13 @@ int  gettotalreq()
 	 }
  }
 
-
+ /*int TotalCpuTime()
+ {
+	 int total;
+	 Process* ptr = rdyList.
+	 while (rdylist.isEmpty() != false)
+	 {
+		 total=total+
+	 }
+ }*/
 };

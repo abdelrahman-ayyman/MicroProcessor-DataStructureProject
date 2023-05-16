@@ -29,4 +29,18 @@ TT	PID	AT	CT	IO_D	WT	RT	TRT
 715	10	9	100	297	606	0	706
 773	30	25	100	586	648	0	748
 851	26	23	80	677	748	0	828
+
 Processes: 30
+avg WT = 228,	avg RT = 0,	avg TRT = 268
+Migration %:	 RTF= 0%,	 MaxW = 0%
+Work Steal %:0%
+Forked Process: 0%
+Killed Process: 0%
+
+Processors: 9 [3FCFS, 3 SJF, 3 RR]
+Processors Load
+p1=%,	p2=%,	p3=%,	p4=%,	p5=%,	p6=%,	p7=%,	p8=%,	p9=%,	
+
+Processors Utiliz
+p1=%,	p2=%,	p3=%,	p4=%,	p5=%,	p6=%,	p7=%,	p8=%,	p9=%,	
+Avg utilization = %

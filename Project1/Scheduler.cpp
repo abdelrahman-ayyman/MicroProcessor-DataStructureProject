@@ -385,7 +385,6 @@ void Scheduler:: addtoBLK(Process*p)
 			canFork = true;
 		if (Process->getForkedBefore() == true)
 			canFork = false;
-		if(Process->)
 		return canFork;
 	}
 	bool Scheduler::TestingProbability(double Probability)
@@ -406,24 +405,26 @@ void Scheduler:: addtoBLK(Process*p)
 		int CT = process->getRemainingTime();
 		//add to children list
 		Process* child = new Process(ID, AT, CT);
-		//add to shortest list
+		//add child to shortest ready list
+		Processor* shortestProcessor = findShortestRdyList();
+		shortestProcessor->addprocess(child);
 		process->setForkedBefore();
 	}
 
 	Processor* Scheduler::findShortestRdyList()
 	{
-		int shortestTime = 999999999;
 		Processor* shortestProcessor;
+		int Shortest = 9999999;
 		for (int i = 0; i < Processorsnum; i++)
 		{
 			if (pros[i]->getType() == "FCFS")
 			{
-				if (arr[i]->sumCpu() < shortesttime)
-					shortesttime = arr[i]->sumCpu();
-				shoertestprocessor = arr[i];
+				if (pros[i]->gettotalreq() < Shortest)
+					Shortest = pros[i]->gettotalreq();
+				shortestProcessor = pros[i];
 			}
 		}
-		return shoertestprocessor;
+		return shortestProcessor;
 	}
 
 	// end of Forking Functions
@@ -437,7 +438,7 @@ void Scheduler:: addtoBLK(Process*p)
 		int PID = Killsignal.getsecond();
 		if (timestep == KillTime)
 		{
-			bool found;
+			bool found=false;
 			for (int i = 0; i < Processorsnum; i++)
 			{
 				if (pros[i]->getType() == "FCFS")
@@ -445,6 +446,7 @@ void Scheduler:: addtoBLK(Process*p)
 					Process* Processptr;
 					pros[i]->removebyid(PID, Processptr);
 					addtoTRM(Processptr);
+					found = true;
 				}
 			}
 			if(found)
@@ -522,13 +524,13 @@ void Scheduler:: addtoBLK(Process*p)
 
 		ofstream Outputfile("OutPutFile.txt");
 		Process* p;
-		int currentWT, currentRT, currentTRT;
-		int totalWT, totalRT, totalTRT =0;
-		int avgWT, avgRT, avgTRT;
-		int MigRTF, MigMaxW;
-		int workstealperc, forkperc, killperc;
-		int processorload, processorutilization;
-		int avgUtilization;
+		int currentWT=0, currentRT=0, currentTRT=0;
+		int totalWT=0, totalRT=0, totalTRT =0;
+		int avgWT=0, avgRT=0, avgTRT=0;
+		int MigRTF=0, MigMaxW=0;
+		int workstealperc=0, forkperc=0, killperc=0;
+		int processorload=0, processorutilization=0;
+		int avgUtilization=0;
 
 		Outputfile << "TT" << "\t" << "PID" << "\t" << "AT" << "\t" << "CT" << "\t" << "IO_D" << "\t" << "WT" << "\t" << "RT" << "\t" << "TRT" << endl;
 
