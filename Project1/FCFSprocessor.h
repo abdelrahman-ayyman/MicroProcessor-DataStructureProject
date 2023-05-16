@@ -51,6 +51,7 @@ void peek(Process* p)
 	 //
 	if(Running!=nullptr)
 	{
+		incrementbusy();
 		if (psh->migrate(Running, FCFS))
 		{
 			Running = nullptr;
@@ -74,6 +75,7 @@ void peek(Process* p)
 	Process*p;
 	if(Running==nullptr)
 	{
+		incrementidle();
 		if(!rdylist.isEmpty())
 		{
 			rdylist.peek(p);
@@ -142,4 +144,20 @@ int  gettotalreq()
  }
 
 
+ void incrementbusy()
+ {
+	 busytime++;
+ }
+ int getbusy()
+ {
+	 return busytime;
+ }
+ void incrementidle()
+ {
+	 idletime++;
+ }
+ int getidle()
+ {
+	 return idletime;
+ }
 };

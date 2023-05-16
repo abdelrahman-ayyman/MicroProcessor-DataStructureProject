@@ -44,7 +44,7 @@ void printRdyList()
 	
 	if(Running!=nullptr)
 	{
-
+		incrementbusy();
 		Running->incrementexcuted();
 		if (Running->getexcuted() == Running->getCpuTime())
 		{
@@ -63,6 +63,7 @@ void printRdyList()
 	Process*p;
 	if(Running==nullptr)
 	{
+		incrementidle();
 		if(!rdylist.isEmpty())
 		{
 			rdylist.peek(p);
@@ -132,5 +133,22 @@ void restoreForked()
 	}
 }
 
+void incrementbusy()
+{
+	busytime++;
+}
+int getbusy()
+{
+	return busytime;
+}
+
+void incrementidle()
+{
+	idletime++;
+}
+int getidle()
+{
+	return idletime;
+}
 
 };

@@ -5,6 +5,8 @@
 #include<cstdlib>
 #include<time.h>
 #include <fstream>
+#include "defs.h"
+
 
 
 int Scheduler::checkAvailability(ProcessorType type = ALL)
@@ -385,7 +387,6 @@ void Scheduler:: addtoBLK(Process*p)
 			canFork = true;
 		if (Process->getForkedBefore() == true)
 			canFork = false;
-		if(Process->)
 		return canFork;
 	}
 	bool Scheduler::TestingProbability(double Probability)
@@ -410,7 +411,7 @@ void Scheduler:: addtoBLK(Process*p)
 		process->setForkedBefore();
 	}
 
-	Processor* Scheduler::findShortestRdyList()
+	/*Processor* Scheduler::findShortestRdyList()
 	{
 		int shortestTime = 999999999;
 		Processor* shortestProcessor;
@@ -424,7 +425,7 @@ void Scheduler:: addtoBLK(Process*p)
 			}
 		}
 		return shoertestprocessor;
-	}
+	}*/
 
 	// end of Forking Functions
 	// Start of Kill signal and kill orphans Functions
@@ -523,10 +524,9 @@ void Scheduler:: addtoBLK(Process*p)
 		ofstream Outputfile("OutPutFile.txt");
 		Process* p;
 		int currentWT, currentRT, currentTRT;
-		int totalWT, totalRT, totalTRT =0;
-		int avgWT, avgRT, avgTRT;
-		int MigRTF, MigMaxW;
-		int workstealperc, forkperc, killperc;
+		int totalWT = 0, totalRT = 0;
+		int totalTRT =0;
+		int forkperc =0, killperc =0;
 		int processorload, processorutilization;
 		int avgUtilization;
 
@@ -560,20 +560,30 @@ void Scheduler:: addtoBLK(Process*p)
 		Outputfile << "Forked Process: " << forkperc / totalprocesses << "%" << endl;
 		Outputfile << "Killed Process: " << killperc / totalprocesses << "%" << endl << endl;
 		int totalprocessors = fcfscount + sjfcount + rrcount;
-		Outputfile << "Processors: " << totalprocessors << " [" << fcfscount << "FCFS, " << sjfcount << " SJF, " << rrcount << " RR]" << endl;
+		Outputfile << "Processors: " << totalprocessors << " [" << fcfscount << " FCFS, " << sjfcount << " SJF, " << rrcount << " RR]" << endl;
 		Outputfile << "Processors Load" << endl;
 		for (int i = 1; i <= totalprocessors; i++)
 		{
-			Outputfile << "p" << i << "=" << "%,\t";
+			Outputfile << "p" << i  << "=" << (pros[i-1]->getbusy()) / (float)totalTRT << "%,\t";
+			
 		}
 		Outputfile << endl << endl;
 		Outputfile << "Processors Utiliz" << endl;
+		float totalut = 0;
+		float currut = 0;
 		for (int i = 1; i <= totalprocessors; i++)
 		{
-			Outputfile << "p" << i << "=" << "%,\t";
+			if (pros[i - 1]->getidle() != 0)
+			{
+				currut = ((float)(pros[i - 1]->getbusy()) / ((pros[i - 1]->getbusy()) + (pros[i - 1]->getidle())));
+				
+				totalut += currut;
+			}
+			Outputfile << "p" << i << "=" << currut << "%,\t";
+	
 		}
 		Outputfile << endl;
-		Outputfile << "Avg utilization = " << "%";
+		Outputfile << "Avg utilization = " << totalut/totalprocessors << "%";
 
 		Outputfile.close();
 	}
