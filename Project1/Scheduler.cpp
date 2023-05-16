@@ -63,11 +63,7 @@ void Scheduler::Assign()
 			//VI
 
 			int minindex = checkAvailability();
-			if (minindex != -1 )
-			{
-
-				q->setfirsttimeCPU(gettime());
-			}
+			
 			pros[minindex]->addprocess(q);	
 		}
 		else
@@ -542,7 +538,7 @@ void Scheduler:: addtoBLK(Process*p)
 			currentWT = (p->getTermination() - p->getArrivalTime()) - p->getCpuTime();
 			Outputfile << currentWT << "\t";
 			totalWT += currentWT;
-			currentRT = p->getArrivalTime() - p->getfirsttimeCPU();
+			currentRT = abs(p->getArrivalTime() - p->getfirsttimeCPU());
 			Outputfile << currentRT << "\t";
 			totalRT += currentRT;
 			currentTRT = p->getTermination() - p->getArrivalTime();

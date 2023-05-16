@@ -85,6 +85,11 @@ void peek(Process* p)
 
 				if (!psh->migrate(p, FCFS))
 					Running = p;
+				if (p->getfirsttime())
+				{
+					p->setfirsttimeCPU(psh->gettime());
+					p->setfirsttime();
+				}
 			}
 		}
 	}

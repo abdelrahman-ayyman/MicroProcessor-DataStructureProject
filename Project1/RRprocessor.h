@@ -100,6 +100,11 @@ public:
 
 				if (!psh->migrate(p, RR))
 					Running = p;
+				if (p->getfirsttime())
+				{
+					p->setfirsttimeCPU(psh->gettime());
+					p->setfirsttime();
+				}
 			}
 		}
 	}

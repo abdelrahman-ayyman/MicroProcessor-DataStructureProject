@@ -32,7 +32,7 @@ int FirstResponse;
 int TRT;
 int WT; 
 int TotalIOD;
-
+bool firsttime;
 /**/
 ProcessState State;
 
@@ -54,6 +54,7 @@ public:
 		WT = -1;
 		forkedBefore = false;
 		TotalIOD = 0;
+		firsttime = true;
 	}
 	int getID()
 	{
@@ -181,6 +182,14 @@ public:
 	int getfirsttimeCPU()
 	{
 		return firsttimeCPU;
+	}
+	void setfirsttime()
+	{
+		firsttime=false;
+	}
+	int getfirsttime()
+	{
+		return firsttime;
 	}
 	~Process(void)
 	{

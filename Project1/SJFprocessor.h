@@ -71,7 +71,11 @@ void printRdyList()
 			{
 	p=dequeueprocess();
 	Running=p;
-	
+	if (p->getfirsttime())
+	{
+		p->setfirsttimeCPU(psh->gettime());
+		p->setfirsttime();
+	}
 	
 			}
 		}
