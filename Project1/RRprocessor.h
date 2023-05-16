@@ -62,9 +62,9 @@ public:
 
 				counterslice = 0;
 			}
-			else if (Running->needio() != -1)
+			else if (Running->needio(neededio) != -1)
 			{
-				psh->IOHandling(Running);
+				psh->IOHandling(Running, neededio);
 			}
 			
 			else

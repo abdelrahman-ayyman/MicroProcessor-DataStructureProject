@@ -93,7 +93,7 @@ public:
 	// Start of Kill signal and kill orphans Functions
 	void KillSignal();
 	// end of Kill signal and kill orphans Functions
-	void IOHandling(Process*& run);
+	void IOHandling(Process* &run, int neededio);
 	void CheckBlock();
 	void Completed(Process*&run);
 	void OutputFile();

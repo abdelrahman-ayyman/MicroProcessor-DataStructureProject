@@ -443,10 +443,10 @@ void Scheduler:: addtoBLK(Process*p)
 	}
 	// end of Kill signal and kill orphans Functions
 	///////Start of io handling
-	void Scheduler::IOHandling(Process*& run)
+	void Scheduler::IOHandling(Process* &run, int neededio)
 	{
-		run->incrementIOD(run->needio());
-		int x = run->needio() + timestep;
+		run->incrementIOD(neededio);
+		int x = neededio + gettime();
 		run->setIOneeded(x);
 		addtoBLK(run);
 		run = nullptr;
@@ -455,20 +455,24 @@ void Scheduler:: addtoBLK(Process*p)
 
 	void Scheduler::CheckBlock()
 	{
-		Process* blk;
+		Process* blkpro;
 		
-		bool b = BLKlist.peek(blk);
+		BLKlist.peek(blkpro);
 
-			if (!b)
+			if (!BLKlist.isEmpty())
 			{
-				int iodone = blk->getIOneeded();
+				int iodone = blkpro->getIOneeded();
 				if (iodone <= timestep)
 				{
-					BLKlist.dequeue(blk);
+					BLKlist.dequeue(blkpro);
 					Process* newblk;
 					BLKlist.peek(newblk);
-					newblk->setIOneeded(newblk->getIOneeded() + timestep);
-					Assign(blk);
+					if (!newblk)
+					{
+						newblk->setIOneeded(newblk->getIOneeded() + timestep);
+					}
+					Assign(blkpro);
+					BLKcount--;
 				}
 				else
 				{

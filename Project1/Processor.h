@@ -18,6 +18,7 @@ ProcessorType Type;
 //ProcessQueue rdylist;
 
 Process* Running;
+int neededio;
 
 public:
 

@@ -137,7 +137,7 @@ public:
 		return CpuTime - totalexcuted;
 	}
 
-	int needio()
+	int needio(int& neededio)
 	{
 		if (!IOprocess.isEmpty())
 		{
@@ -147,7 +147,8 @@ public:
 			if (totalexcuted == p.getfirst())
 			{
 				IOprocess.dequeue(p);
-				return p.getsecond();
+				neededio = p.getsecond();
+				return neededio;
 			}
 		}
 
