@@ -370,54 +370,54 @@ void Scheduler:: addtoBLK(Process*p)
 
 	
 	//Start of Forking Functions:
-	//bool Scheduler::CanForkChild(Process* Process)
-	//{
-	//	bool canFork;
-	//	//test for running,forked before or not,FCFS or not
-	//	if (Process->getProcessState() == RUN )
-	//		canFork = true;
-	//	if (Process->getForkedBefore() == true)
-	//		canFork = false;
-	//	
-	//	return canFork;
-	//}
-	//bool Scheduler::TestingProbability(double Probability)
-	//{
-	//	double randNum = ((rand() % 100)+1);
-	//	if (randNum <= Probability)
-	//		return true;
-	//	else
-	//		return false;
- //   }
+	bool Scheduler::CanForkChild(Process* Process)
+	{
+		bool canFork;
+		//test for running,forked before or not,FCFS or not
+		if (Process->getProcessState() == RUN )
+			canFork = true;
+		if (Process->getForkedBefore() == true)
+			canFork = false;
+		if(Process->)
+		return canFork;
+	}
+	bool Scheduler::TestingProbability(double Probability)
+	{
+		double randNum = ((rand() % 100)+1);
+		if (randNum <= Probability)
+			return true;
+		else
+			return false;
+    }
 
-	//void Scheduler::forkChild(Process* process)
-	//{
-	//	processnum++;
-	//	int ID = processnum;
-	//	int AT = timestep;
-	//	//remaing cpu time of parent done
-	//	int CT = process->getRemainingTime();
-	//	//add to children list
-	//	Process* child = new Process(ID, AT, CT);
-	//	//add to shortest list
-	//	process->setForkedBefore();
-	//}
+	void Scheduler::forkChild(Process* process)
+	{
+		processnum++;
+		int ID = processnum;
+		int AT = timestep;
+		//remaing cpu time of parent done
+		int CT = process->getRemainingTime();
+		//add to children list
+		Process* child = new Process(ID, AT, CT);
+		//add to shortest list
+		process->setForkedBefore();
+	}
 
-	//Processor* Scheduler::findShortestRdyList()
-	//{
-	//	int shortestTime = 999999999;
-	//	Processor* shortestProcessor;
-	//	for (int i = 0; i < Processorsnum; i++)
-	//	{
-	//		if (pros[i]->getType() == "FCFS")
-	//		{
-	//			if (arr[i]->sumCpu() < shortesttime)
-	//				shortesttime = arr[i]->sumCpu();
-	//			shoertestprocessor = arr[i];
-	//		}
-	//	}
-	//	return shoertestprocessor;
-	//}
+	Processor* Scheduler::findShortestRdyList()
+	{
+		int shortestTime = 999999999;
+		Processor* shortestProcessor;
+		for (int i = 0; i < Processorsnum; i++)
+		{
+			if (pros[i]->getType() == "FCFS")
+			{
+				if (arr[i]->sumCpu() < shortesttime)
+					shortesttime = arr[i]->sumCpu();
+				shoertestprocessor = arr[i];
+			}
+		}
+		return shoertestprocessor;
+	}
 
 	// end of Forking Functions
 	// Start of Kill signal and kill orphans Functions
