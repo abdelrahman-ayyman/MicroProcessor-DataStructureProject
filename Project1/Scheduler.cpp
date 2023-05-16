@@ -520,7 +520,7 @@ void Scheduler:: addtoBLK(Process*p)
 		int avgWT, avgRT, avgTRT;
 		int MigRTF, MigMaxW;
 		int workstealperc, forkperc, killperc;
-		int processorload, int processorutilization;
+		int processorload, processorutilization;
 		int avgUtilization;
 
 		Outputfile << "TT" << "\t" << "PID" << "\t" << "AT" << "\t" << "CT" << "\t" << "IO_D" << "\t" << "WT" << "\t" << "RT" << "\t" << "TRT" << endl;
