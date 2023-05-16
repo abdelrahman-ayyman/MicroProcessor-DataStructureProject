@@ -133,7 +133,7 @@ Process* dequeueprocess()
 	 this->dequeueprocess();
 	 temp.enqueue(p);
 	 this->peek(q);
-	 if (q && q->getForked())
+	 if (q && q->getForkedBefore())
 		 storeForked(q);
 		*/
  }

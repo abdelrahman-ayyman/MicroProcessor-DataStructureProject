@@ -77,7 +77,7 @@ void Scheduler::Assign()
 
 bool Scheduler::migrate(Process* p, ProcessorType Type)
 {
-	if (p->getForked() == true)
+	if (p->getForkedBefore() == true)
 		return false;
 
 	if (Type == RR)
@@ -132,7 +132,7 @@ void Scheduler::workSteal()
 		Process* p;
 		pros[longestQueue]->peek(p);
 
-		if (p && p->getForked())
+		if (p && p->getForkedBefore())
 		{
 			pros[longestQueue]->storeForked(p);
 			bool onlyForked = false;
