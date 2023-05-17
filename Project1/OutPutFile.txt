@@ -1,11 +1,27 @@
 TT	PID	AT	CT	IO_D	WT	RT	TRT
+9	3	4	3	0	2	2	5
+-1	8	8	2	0	-11	842150459	-9
+10	5	5	2	0	3	3	5
+-1	10	10	1	0	-12	842150461	-11
+14	7	6	4	0	4	4	8
+-1	11	14	1	0	-16	842150465	-15
+15	6	4	6	0	5	5	11
+-1	9	10	6	0	-17	842150461	-11
+17	2	3	6	7	8	0	14
+18	1	3	5	3	10	0	15
+18	4	4	4	4	10	1	14
 
-Processes: -858993460
-avg WT = 0,	avg RT = 0,	avg TRT = 0
-Migration %:	 RTF= -0%,	 MaxW = 0%
-Work Steal %:-0%
-Forked Process: -0%
-Killed Process: -0%
+Processes: 11
+avg WT = -1,	avg RT = -84215039,	avg TRT = 2
+Migration %:	 RTF= 0%,	 MaxW = 0%
+Work Steal %:0%
+Forked Process: 0%
+Killed Process: 0%
 
-Processors: 1717986916 [-858993460 FCFS, -858993460 SJF, -858993460 RR]
+Processors: 2 [2 FCFS, 0 SJF, 0 RR]
 Processors Load
+p1=57.6923%,	p2=57.6923%,	
+
+Processors Utiliz
+p1=68.1818%,	p2=62.5%,	
+Avg utilization = 65.3409%

@@ -281,14 +281,21 @@ void Scheduler:: addtoBLK(Process*p)
 	{
 		if(p!=nullptr)
 		{
-	TRMcount++;
-	TRMlist.enqueue(p);
+	        TRMcount++;
+	        TRMlist.enqueue(p);
+			if (p->isParent())
+			{
+				cout << endl << "parent:  " << p->getID() << "  child:  " << p->getChild()->getID()<<endl;
+				if (p->getParent() != nullptr)
+					p->getParent()->setChild(nullptr);
+				killOrphans(p->getChild());
+			}
 		}
 	}
 
 	void Scheduler::Load()
 	{
-		ifstream fileinput("newtesting.txt");
+		ifstream fileinput("bigtest.txt");
 
 		if (fileinput.is_open())
 		{
@@ -428,7 +435,7 @@ void Scheduler:: addtoBLK(Process*p)
 	/*Processor* Scheduler::findShortestRdyList()
 	{
 		Processor* shortestProcessor;
-		int Shortest = 9999999;
+		int Shortest = 10000000000;
 		for (int i = 0; i < Processorsnum; i++)
 		{
 			if (pros[i]->getType() == "FCFS")
@@ -479,6 +486,7 @@ void Scheduler:: addtoBLK(Process*p)
 	//}
 	void Scheduler::killOrphans(Process* child)
 	{
+		child->setParent(nullptr);
 		int id=child->getID();
 		bool killed = killProcess(id);
 		//check for other orphans killed when arrived to trm list
