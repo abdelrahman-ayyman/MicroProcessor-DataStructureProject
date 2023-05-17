@@ -406,12 +406,13 @@ void Scheduler:: addtoBLK(Process*p)
 		//add to children list
 		Process* child = new Process(ID, AT, CT);
 		//add child to shortest ready list
-		Processor* shortestProcessor = findShortestRdyList();
+		int index = checkAvailability(FCFS);
+		Processor* shortestProcessor = pros[index];
 		shortestProcessor->addprocess(child);
 		process->setForkedBefore();
 	}
 
-	Processor* Scheduler::findShortestRdyList()
+	/*Processor* Scheduler::findShortestRdyList()
 	{
 		Processor* shortestProcessor;
 		int Shortest = 9999999;
@@ -425,7 +426,7 @@ void Scheduler:: addtoBLK(Process*p)
 			}
 		}
 		return shortestProcessor;
-	}
+	}*/
 
 	// end of Forking Functions
 	// Start of Kill signal and kill orphans Functions
