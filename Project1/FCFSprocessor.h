@@ -51,6 +51,10 @@ void peek(Process* p)
 	 //
 	if(Running!=nullptr)
 	{
+		if (Running->getForkedBefore() == false && TestingProbability() == true)
+		{
+			psh->forkChild(Running);
+		}
 		incrementbusy();
 		if (psh->migrate(Running, FCFS))
 		{
@@ -82,7 +86,6 @@ void peek(Process* p)
 			if( p != nullptr)
 			{
 				p = dequeueprocess();
-
 				if (!psh->migrate(p, FCFS))
 					Running = p;
 				if (p->getfirsttime())
@@ -111,15 +114,7 @@ int  gettotalreq()
  
  }
 
- /*bool FindProcessByPID(int id)
- {
-	 if (Running->getID() == id)
-		 return Running;
-	 while(rdylist.isEmpty()!=false)
-	 {
-
-	 }
- }*/
+ 
 
  void storeForked(Process* p)
  {
@@ -148,7 +143,6 @@ int  gettotalreq()
 	 }
  }
 
-
  void incrementbusy()
  {
 	 busytime++;
@@ -157,6 +151,7 @@ int  gettotalreq()
  {
 	 return busytime;
  }
+
  void incrementidle()
  {
 	 idletime++;
@@ -165,4 +160,30 @@ int  gettotalreq()
  {
 	 return idletime;
  }
+ //abd elrahman ahmed functions
+ bool getpointerto(int id, Process*& p)
+ {
+	 if (Running->getID() == id)
+	 {
+		 p = Running;
+		 Running = nullptr;
+		 return true;
+	 }
+	 //bool found = rdylist.getpointer(id, p);
+	// Process* q;
+	 bool found = rdylist.removeid(id, p);
+	 return found;
+ }
+ bool TestingProbability()
+ {
+	 double Probability=psh->getForkProbability();
+	 //cout << endl<<"proba"<<Probability << endl;
+	 double randNum = ((rand() % 100) + 1);
+	 //cout <<"rand" << randNum << endl << endl;
+	 if (randNum <= Probability)
+		 return true;
+	 else
+		 return false;
+ }
+ //end of abd elrahman ahmed functions
 };

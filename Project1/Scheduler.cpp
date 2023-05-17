@@ -46,6 +46,7 @@ int Scheduler::checkAvailability(ProcessorType type = ALL)
 	}
 	return minindex;
 }
+ 
 
 
 void Scheduler::Assign()
@@ -280,14 +281,21 @@ void Scheduler:: addtoBLK(Process*p)
 	{
 		if(p!=nullptr)
 		{
-	TRMcount++;
-	TRMlist.enqueue(p);
+	        TRMcount++;
+	        TRMlist.enqueue(p);
+			if (p->isParent()&&p->getChild()!=nullptr)
+			{
+				cout << endl << "parent:  " << p->getID() << "  child:  " << p->getChild()->getID()<<endl;
+				if (p->getParent() != nullptr)
+					p->getParent()->setChild(nullptr);
+				killOrphans(p->getChild());
+			}
 		}
 	}
 
 	void Scheduler::Load()
 	{
-		ifstream fileinput("newtesting.txt");
+		ifstream fileinput("bigtest.txt");
 
 		if (fileinput.is_open())
 		{
@@ -296,9 +304,7 @@ void Scheduler:: addtoBLK(Process*p)
 			fileinput >> rrcount;
 			Processorsnum = fcfscount + sjfcount + rrcount;
 			fileinput >> timeslice >> rtf >> maxW >> stl;
-			int forkprobperc;
-			fileinput >> forkprobperc;
-			//forkprob = forkprobperc / 100.0;
+			fileinput >> forkprob;
 			fileinput >> processnum;
 
 			for (int i = 1; i <= processnum; i++)
@@ -384,26 +390,26 @@ void Scheduler:: addtoBLK(Process*p)
 	return s;
 }
 
-	
+	//abd elrahman ahmed functions
 	//Start of Forking Functions:
-	bool Scheduler::CanForkChild(Process* Process)
-	{
-		bool canFork;
-		//test for running,forked before or not,FCFS or not
-		if (Process->getProcessState() == RUN )
-			canFork = true;
-		if (Process->getForkedBefore() == true)
-			canFork = false;
-		return canFork;
-	}
-	bool Scheduler::TestingProbability(double Probability)
+	// 
+	//bool Scheduler::CanForkChild(Process* Process)
+	//{
+	//	bool canFork=false;
+	//	if (Process->getProcessState() == RUN )
+	//		canFork = true;
+	//	if (Process->getForkedBefore() == true)
+	//		canFork = false;
+	//	return canFork;
+	//}
+	/*bool Scheduler::TestingProbability(double Probability)
 	{
 		double randNum = ((rand() % 100)+1);
 		if (randNum <= Probability)
 			return true;
 		else
 			return false;
-    }
+    }*/
 
 	void Scheduler::forkChild(Process* process)
 	{
@@ -414,21 +420,29 @@ void Scheduler:: addtoBLK(Process*p)
 		int CT = process->getRemainingTime();
 		//add to children list
 		Process* child = new Process(ID, AT, CT);
-		//add to shortest list
+		process->setChild(child);
+		child->setParent(process);
+		//add child to shortest ready list
+		int index = checkAvailability(FCFS);
+		Processor* shortestProcessor = pros[index];
+		shortestProcessor->addprocess(child);
 		process->setForkedBefore();
+		NumberofForkedProcesses++;
+		//cout <<endl<<endl<< "childid:"<<child->getID() << endl << endl;
+		return;
 	}
 
 	/*Processor* Scheduler::findShortestRdyList()
 	{
-		int shortestTime = 999999999;
 		Processor* shortestProcessor;
+		int Shortest = 10000000000;
 		for (int i = 0; i < Processorsnum; i++)
 		{
 			if (pros[i]->getType() == "FCFS")
 			{
-				if (arr[i]->sumCpu() < shortesttime)
-					shortesttime = arr[i]->sumCpu();
-				shoertestprocessor = arr[i];
+				if (pros[i]->gettotalreq() < Shortest)
+					Shortest = pros[i]->gettotalreq();
+				shortestProcessor = pros[i];
 			}
 		}
 		return shoertestprocessor;
@@ -436,31 +450,97 @@ void Scheduler:: addtoBLK(Process*p)
 
 	// end of Forking Functions
 	// Start of Kill signal and kill orphans Functions
-	void Scheduler:: KillSignal()
+	
+	//void Scheduler:: killSignal()
+	//{
+	//	Pairs Killsignal;
+	//	Pairs deleted;
+	//	Sigkilllist.peek(Killsignal);
+	//	int KillTime = Killsignal.getfirst();
+	//	int PID = Killsignal.getsecond();
+	//	//cout << "id=" << PID<<endl;
+	//	//cout << "time=" << KillTime << endl;
+	//	if (timestep == KillTime)
+	//	{
+	//		//cout << "enteredfirstif" << endl;
+	//		bool found=false;
+	//		for (int i = 0; i < Processorsnum; i++)
+	//		{
+	//			if (pros[i]->getType() == "FCFS")
+	//			{
+	//				//cout << "enteredsecondif" << endl;
+	//				Process* Processptr=nullptr;
+	//				found=pros[i]->getpointerto(PID, Processptr);
+	//				cout << endl<<endl<<found<<endl;
+	//				//cout <<"found process"<< Processptr << endl;
+	//				addtoTRM(Processptr);
+	//			}
+	//		}
+	//		if (found)
+	//		{
+	//			Numberofkillsignals++;
+	//			Sigkilllist.dequeue(deleted);
+	//		}
+	//	}
+
+	//}
+	void Scheduler::killOrphans(Process* child)
+	{
+		child->setParent(nullptr);
+		int id=child->getID();
+		bool killed = killProcess(id);
+		return;
+	}
+	void Scheduler::RemovekillSignal()
 	{
 		Pairs Killsignal;
 		Pairs deleted;
 		Sigkilllist.peek(Killsignal);
 		int KillTime = Killsignal.getfirst();
 		int PID = Killsignal.getsecond();
+		bool killed = false;
 		if (timestep == KillTime)
 		{
-			bool found;
-			for (int i = 0; i < Processorsnum; i++)
-			{
-				if (pros[i]->getType() == "FCFS")
-				{
-					Process* Processptr;
-					pros[i]->removebyid(PID, Processptr);
-					addtoTRM(Processptr);
-				}
-			}
-			if(found)
-			    Sigkilllist.dequeue(deleted);
+			killed = killProcess(PID);
 		}
-
+		if (killed)
+		{
+			Sigkilllist.dequeue(deleted);
+		}
+		return;
 	}
+	bool Scheduler::killProcess(int id)
+	{
+		//cout << endl << endl << id<< endl << endl;
+		bool found = false;
+		for (int i = 0; i < fcfscount; i++)
+		{
+			//cout << endl << endl << id << endl << endl;
+				Process* Processptr = nullptr;
+				found = pros[i]->getpointerto(id, Processptr);
+				if (found)
+				{
+					addtoTRM(Processptr);
+					Numberofkillsignals++;
+				}
+		}
+		return found;
+	}
+	//void Scheduler ::printall()
+	//{
+	//	Process* Processptr;
+	//	for (int i = 0; i < Processorsnum; i++)
+	//	{
+	//		bool found=pros[i]->getpointerto(1, Processptr);
+	//		if (found)
+	//		{
+	//			cout<<endl<<endl<<Processptr->getID()<<endl<<endl;
+	//		}
+	//	}
+	//}
 	// end of Kill signal and kill orphans Functions
+	// end of abd elrahman ahmed functions
+	
 	///////Start of io handling
 	void Scheduler::IOHandling(Process* &run, int neededio)
 	{

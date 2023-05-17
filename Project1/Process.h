@@ -23,9 +23,7 @@ int IOcount;
 int firsttimeCPU;
 LinkedQueue<Pairs> IOprocess;
 //very important! Node* IOlist;
-//Node*child; bool isparent;
 
-bool forkedBefore;
 int TerminationTime;
 int FirstResponse;
 int TRT;
@@ -36,7 +34,11 @@ bool firsttime;
 ProcessState State;
 
 friend ostream& operator<<(ostream&, Process*);
-
+//abd elrahman ahmed variables
+Process* child;
+Process* parent;
+bool forkedBefore;
+//end of abd elrahman variables
 public:
 	Process(){};
 	Process(int ID,int arrival,int runtime,int IOnum=0)
@@ -51,9 +53,10 @@ public:
 		TerminationTime = -1;
 		TRT = -1;
 		WT = -1;
-		forkedBefore = false;
 		TotalIOD = 0;
 		firsttime = true;
+		child = nullptr;
+		parent = nullptr;
 	}
 	int getID()
 	{
@@ -145,15 +148,7 @@ public:
 
 		return -1;
 	}
-	bool getForkedBefore()
-	{
-		return forkedBefore;
-	}
-
-	void setForkedBefore()
-	{
-		forkedBefore = true;
-	}
+	
 
 	void incrementIOD(int IOD)
 	{
@@ -183,8 +178,43 @@ public:
 	~Process(void)
 	{
 	}
+	//abd elrahman ahmed functions
+	bool getForkedBefore()
+	{
+		return forkedBefore;
+	}
 
+	void setForkedBefore()
+	{
+		forkedBefore = true;
+	}
 
+	Process* getChild()
+	{
+		return child;
+	}
+
+	void setChild(Process* ForkedChild)
+	{
+		child=ForkedChild;
+	}
+
+	Process* getParent()
+	{
+		return parent;
+	}
+
+	void setParent(Process* Parent)
+	{
+		parent = Parent;
+	}
+	bool isParent()
+	{
+		if (child != nullptr)
+			return true;
+		return false;
+	}
+	//end of abd elrahman functions
 };
 
  

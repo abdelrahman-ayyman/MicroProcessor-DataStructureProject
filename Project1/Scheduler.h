@@ -15,24 +15,32 @@ private:
 	int Processorsnum;
 
 	Processor** pros;
-	//
 	int processnum;
 	int BLKcount;
 	int TRMcount;
 	UserInterface Window;
 	int fcfscount, sjfcount, rrcount, timeslice, rtf, maxW, stl;
-	double forkprob;
+
 
 	int MigRTF, MigMaxW, workstealper;
-	
+
 	
 	ProcessQueue NEWlist;
 	ProcessQueue BLKlist;
 	ProcessQueue TRMlist;
+	//abd elrahman ahmed variables
 	LinkedQueue<Pairs> Sigkilllist;
+	int forkprob;
+	int Numberofkillsignals;
+	int NumberofForkedProcesses;
+	//end of abd elrahman ahmed variables
 
 
 public:
+	int getForkProbability()
+	{
+		return forkprob;
+	}
 	int gettime()
 	{
 	
@@ -86,15 +94,20 @@ public:
 	bool removeBLK(Process*&);
 	void Load();
 	Scheduler();
+	//abd elrahman ahmed functions
 	// Start of Forking Functions:
 	bool TestingProbability(double Probability);
-	bool CanForkChild(Process* Process);
-	void forkChild(Process* Process);
-	Processor* findShortestRdyList();
+	//bool CanForkChild(Process* Process);
+	void forkChild(Process* process);
+	//Processor* findShortestRdyList();
 	// end of Forking Functions
 	// Start of Kill signal and kill orphans Functions
-	void KillSignal();
+	void RemovekillSignal();
+	bool killProcess(int id);
+	void killOrphans(Process* child);
+	//void printall();
 	// end of Kill signal and kill orphans Functions
+	//end of abd elrahman ahmed functions
 	void IOHandling(Process* &run, int neededio);
 	void CheckBlock();
 	void Completed(Process*&run);
