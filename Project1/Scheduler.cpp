@@ -46,6 +46,7 @@ int Scheduler::checkAvailability(ProcessorType type = ALL)
 	}
 	return minindex;
 }
+ 
 
 
 void Scheduler::Assign()
@@ -287,7 +288,7 @@ void Scheduler:: addtoBLK(Process*p)
 
 	void Scheduler::Load()
 	{
-		ifstream fileinput("bigtest.txt");
+		ifstream fileinput("newtesting.txt");
 
 		if (fileinput.is_open())
 		{
@@ -491,26 +492,35 @@ void Scheduler:: addtoBLK(Process*p)
 		Sigkilllist.peek(Killsignal);
 		int KillTime = Killsignal.getfirst();
 		int PID = Killsignal.getsecond();
+		//cout << endl << endl << KillTime << PID<<endl<<endl;
 		bool killed = false;
 		if (timestep == KillTime)
 		{
+			//cout << endl << endl << KillTime << PID << endl << endl;
 			killed = killProcess(PID);
 		}
 		if (killed)
 		{
+			//cout << endl << endl << KillTime << PID << endl << endl;
 			Sigkilllist.dequeue(deleted);
 		}
 		return;
 	}
 	bool Scheduler::killProcess(int id)
 	{
+		//cout << endl << endl << id << endl << endl;
 		bool found = false;
 		for (int i = 0; i < Processorsnum; i++)
 		{
+			//cout << endl<<pros[i]->getType() << endl;
 			if (pros[i]->getType() == "FCFS")
 			{
+				//cout << endl << pros[i]->getType() << endl;
 				Process* Processptr = nullptr;
 				found = pros[i]->getpointerto(id, Processptr);
+				cout << endl << endl << Processptr->getID() << endl << endl;
+				//remove from ready or run
+				Processptr->getProcessState();
 				if (found)
 				{
 					addtoTRM(Processptr);
@@ -520,6 +530,18 @@ void Scheduler:: addtoBLK(Process*p)
 		}
 		return found;
 	}
+	//void Scheduler ::printall()
+	//{
+	//	Process* Processptr;
+	//	for (int i = 0; i < Processorsnum; i++)
+	//	{
+	//		bool found=pros[i]->getpointerto(1, Processptr);
+	//		if (found)
+	//		{
+	//			cout<<endl<<endl<<Processptr->getID()<<endl<<endl;
+	//		}
+	//	}
+	//}
 	// end of Kill signal and kill orphans Functions
 	// end of abd elrahman ahmed functions
 	

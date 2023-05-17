@@ -98,8 +98,10 @@ public:
 	//Processor* findShortestRdyList();
 	// end of Forking Functions
 	// Start of Kill signal and kill orphans Functions
-	void killSignal();
+	void RemovekillSignal();
+	bool killProcess(int id);
 	void killOrphans(Process* child);
+	//void printall();
 	// end of Kill signal and kill orphans Functions
 	//end of abd elrahman ahmed functions
 	void IOHandling(Process* &run, int neededio);

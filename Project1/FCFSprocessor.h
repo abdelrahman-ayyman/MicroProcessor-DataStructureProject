@@ -163,9 +163,12 @@ int  gettotalreq()
 	 if (Running->getID() == id)
 	 {
 		 p = Running;
+		 Running = nullptr;
 		 return true;
 	 }
-	 int found = rdylist.getpointer(id, p);
+	 //bool found = rdylist.getpointer(id, p);
+	// Process* q;
+	 bool found = rdylist.removeid(id, p);
 	 return found;
  }
  //end of abd elrahman ahmed functions
