@@ -443,58 +443,83 @@ void Scheduler:: addtoBLK(Process*p)
 
 	// end of Forking Functions
 	// Start of Kill signal and kill orphans Functions
-	void Scheduler:: killSignal()
+	
+	//void Scheduler:: killSignal()
+	//{
+	//	Pairs Killsignal;
+	//	Pairs deleted;
+	//	Sigkilllist.peek(Killsignal);
+	//	int KillTime = Killsignal.getfirst();
+	//	int PID = Killsignal.getsecond();
+	//	//cout << "id=" << PID<<endl;
+	//	//cout << "time=" << KillTime << endl;
+	//	if (timestep == KillTime)
+	//	{
+	//		//cout << "enteredfirstif" << endl;
+	//		bool found=false;
+	//		for (int i = 0; i < Processorsnum; i++)
+	//		{
+	//			if (pros[i]->getType() == "FCFS")
+	//			{
+	//				//cout << "enteredsecondif" << endl;
+	//				Process* Processptr=nullptr;
+	//				found=pros[i]->getpointerto(PID, Processptr);
+	//				cout << endl<<endl<<found<<endl;
+	//				//cout <<"found process"<< Processptr << endl;
+	//				addtoTRM(Processptr);
+	//			}
+	//		}
+	//		if (found)
+	//		{
+	//			Numberofkillsignals++;
+	//			Sigkilllist.dequeue(deleted);
+	//		}
+	//	}
+
+	//}
+	void Scheduler::killOrphans(Process* child)
+	{
+		int id=child->getID();
+		bool killed = killProcess(id);
+		//check for other orphans killed when arrived to trm list
+		return;
+	}
+	void Scheduler::RemovekillSignal()
 	{
 		Pairs Killsignal;
 		Pairs deleted;
 		Sigkilllist.peek(Killsignal);
 		int KillTime = Killsignal.getfirst();
 		int PID = Killsignal.getsecond();
-		//cout << "id=" << PID<<endl;
-		//cout << "time=" << KillTime << endl;
+		bool killed = false;
 		if (timestep == KillTime)
 		{
-			//cout << "enteredfirstif" << endl;
-			bool found=false;
-			for (int i = 0; i < Processorsnum; i++)
-			{
-				if (pros[i]->getType() == "FCFS")
-				{
-					//cout << "enteredsecondif" << endl;
-					Process* Processptr=nullptr;
-					found=pros[i]->getpointerto(PID, Processptr);
-					cout << endl<<endl<<found<<endl;
-					//cout <<"found process"<< Processptr << endl;
-					addtoTRM(Processptr);
-				}
-			}
-			if (found)
-			{
-				Numberofkillsignals++;
-				Sigkilllist.dequeue(deleted);
-			}
+			killed = killProcess(PID);
 		}
-
-	}
-	/*void Scheduler::killOrphans(Process* child)
-	{
-		for (int i = 0; i < processnum; i++)
+		if (killed)
 		{
-			if (pros[i]->Findproccess(child) == true)
+			Sigkilllist.dequeue(deleted);
+		}
+		return;
+	}
+	bool Scheduler::killProcess(int id)
+	{
+		bool found = false;
+		for (int i = 0; i < Processorsnum; i++)
+		{
+			if (pros[i]->getType() == "FCFS")
 			{
-				if (child->getstate() == RUN)
+				Process* Processptr = nullptr;
+				found = pros[i]->getpointerto(id, Processptr);
+				if (found)
 				{
-					arr[i]->Move_From_Run_To_BLK_Or_TRM(child);
-				}
-				if (child->getstate() == RDY)
-				{
-					int orphanId = child->getPID();
-					process* ptr;
-					arr[i]->Move_From_Ready_To_TRM(orphanId, ptr);
+					addtoTRM(Processptr);
+					Numberofkillsignals++;
 				}
 			}
 		}
-	}*/
+		return found;
+	}
 	// end of Kill signal and kill orphans Functions
 	// end of abd elrahman ahmed functions
 	

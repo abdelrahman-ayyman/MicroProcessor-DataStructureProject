@@ -111,16 +111,7 @@ int  gettotalreq()
  
  }
 
- bool getpointerto(int id, Process*& p)
- {
-	 if (Running->getID() == id)
-	 {
-		 p = Running;
-		 return true;
-	 }
-	int found= rdylist.getpointer(id, p);
-	return found;
- }
+ 
 
  void storeForked(Process* p)
  {
@@ -166,5 +157,16 @@ int  gettotalreq()
  {
 	 return idletime;
  }
-
+ //abd elrahman ahmed functions
+ bool getpointerto(int id, Process*& p)
+ {
+	 if (Running->getID() == id)
+	 {
+		 p = Running;
+		 return true;
+	 }
+	 int found = rdylist.getpointer(id, p);
+	 return found;
+ }
+ //end of abd elrahman ahmed functions
 };
