@@ -1,15 +1,9 @@
 #include"Linkedlist.h"
 
-
-
-
-
 class ProcessLinkedlist:public LinkedList<Process*>
 {
 public:
-
 	int totalreqtime;
-
 
 	ProcessLinkedlist():LinkedList<Process*>()
 	{
@@ -19,60 +13,60 @@ public:
 
 
 
+	bool removeid(int id, Process*& frntEntry)
+	{
 
 
-
-
-	bool removeid(int id,Process*& frntEntry)
-{
-	
-	
-		Node<Process*>* curPtr ;
-		Process*p;
-		if(!isEmpty())
+		Node<Process*>* curPtr;
+		Process* p;
+		if (!isEmpty())
 		{
-			for(int i=1;i<=itemcount;i++)
+			for (int i = 1; i <= itemcount; i++)
 			{
-		curPtr=getNodeAt(i);
-		p=curPtr->getItem();
+				curPtr = getNodeAt(i);
+				p = curPtr->getItem();
 
-		if(p->getID()==id)
-		{
-		remove(i,frntEntry);
-		return true;
+				if (p->getID() == id)
+				{
+					remove(i, frntEntry);
+					return true;
 
-		}
-		
+				}
+
 			}
 
 		}
-		frntEntry=nullptr;
+		frntEntry = nullptr;
 		return false;
-}
+	}
 
-void print()
-{
-	Node<Process*>* p = Head;
-	Process*q;
-			
-			if(p!=nullptr)
-			{
-				
-	           q= p->getItem();
-			   cout<<q->getID();
-			p= p->getNext();
-			}
-			while(p!=nullptr)
-			{
-				 q= p->getItem();
-			  
-	 
-	cout<<" , "<<q->getID();
-	p= p->getNext();
-			}
-		
 
-}
+
+
+
+	void print()
+	{
+		Node<Process*>* p = Head;
+		Process* q;
+
+		if (p != nullptr)
+		{
+
+			q = p->getItem();
+			cout << q->getID();
+			p = p->getNext();
+		}
+		while (p != nullptr)
+		{
+			q = p->getItem();
+
+
+			cout << " , " << q->getID();
+			p = p->getNext();
+		}
+
+
+	}
 
 
 
@@ -94,9 +88,9 @@ bool remove(int pos,Process*& frntEntry)
 			prevptr->setNext(curPtr->getNext());
 		}
 		curPtr->setNext(nullptr);
-		/*delete curPtr;
+		//delete curPtr;
 		
-		curPtr = nullptr;*/
+		//curPtr = nullptr;
 		frntEntry=curPtr->getItem();
 		itemcount--;
 	}
@@ -125,6 +119,17 @@ bool peek(Process*& frntEntry)
 	return true;
 
 }
-
+bool getpointer(int id, Process*& p)
+{
+	Node<Process*>* ptr = Head;
+	while (p != nullptr)
+	{
+		p=ptr->getItem();
+		if (p->getID() == id)
+			return true;
+		ptr = ptr->getNext();
+	}
+	return false;
+}
 
 };

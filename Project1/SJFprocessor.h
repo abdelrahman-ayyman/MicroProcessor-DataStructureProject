@@ -158,5 +158,8 @@ int getidle()
 {
 	return idletime;
 }
-
+bool getpointerto(int id, Process*& p)
+{
+	return false;
+}
 };

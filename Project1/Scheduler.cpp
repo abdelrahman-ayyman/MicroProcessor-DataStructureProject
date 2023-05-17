@@ -384,7 +384,7 @@ void Scheduler:: addtoBLK(Process*p)
 	return s;
 }
 
-	
+	//abd elrahman ahmed functions
 	//Start of Forking Functions:
 	bool Scheduler::CanForkChild(Process* Process)
 	{
@@ -414,11 +414,15 @@ void Scheduler:: addtoBLK(Process*p)
 		int CT = process->getRemainingTime();
 		//add to children list
 		Process* child = new Process(ID, AT, CT);
+		process->setChild(child);
+		child->setParent(process);
 		//add child to shortest ready list
 		int index = checkAvailability(FCFS);
 		Processor* shortestProcessor = pros[index];
 		shortestProcessor->addprocess(child);
 		process->setForkedBefore();
+		NumberofForkedProcesses++;
+		return;
 	}
 
 	/*Processor* Scheduler::findShortestRdyList()
@@ -439,37 +443,61 @@ void Scheduler:: addtoBLK(Process*p)
 
 	// end of Forking Functions
 	// Start of Kill signal and kill orphans Functions
-	void Scheduler:: KillSignal()
+	void Scheduler:: killSignal()
 	{
-		cout << endl << endl;
 		Pairs Killsignal;
 		Pairs deleted;
 		Sigkilllist.peek(Killsignal);
 		int KillTime = Killsignal.getfirst();
 		int PID = Killsignal.getsecond();
-		cout << "id=" << PID<<endl;
-		cout << "time=" << KillTime << endl;
+		//cout << "id=" << PID<<endl;
+		//cout << "time=" << KillTime << endl;
 		if (timestep == KillTime)
 		{
-			cout << "entered" << endl;
+			//cout << "enteredfirstif" << endl;
 			bool found=false;
 			for (int i = 0; i < Processorsnum; i++)
 			{
 				if (pros[i]->getType() == "FCFS")
 				{
-					Process* Processptr;
-					pros[i]->removebyid(PID, Processptr);
-					//cout <<"id found"<< Processptr->getID() << endl;
+					//cout << "enteredsecondif" << endl;
+					Process* Processptr=nullptr;
+					found=pros[i]->getpointerto(PID, Processptr);
+					cout << endl<<endl<<found<<endl;
+					//cout <<"found process"<< Processptr << endl;
 					addtoTRM(Processptr);
-					found = true;
 				}
 			}
-			if(found)
-			    Sigkilllist.dequeue(deleted);
+			if (found)
+			{
+				Numberofkillsignals++;
+				Sigkilllist.dequeue(deleted);
+			}
 		}
 
 	}
+	/*void Scheduler::killOrphans(Process* child)
+	{
+		for (int i = 0; i < processnum; i++)
+		{
+			if (pros[i]->Findproccess(child) == true)
+			{
+				if (child->getstate() == RUN)
+				{
+					arr[i]->Move_From_Run_To_BLK_Or_TRM(child);
+				}
+				if (child->getstate() == RDY)
+				{
+					int orphanId = child->getPID();
+					process* ptr;
+					arr[i]->Move_From_Ready_To_TRM(orphanId, ptr);
+				}
+			}
+		}
+	}*/
 	// end of Kill signal and kill orphans Functions
+	// end of abd elrahman ahmed functions
+	
 	///////Start of io handling
 	void Scheduler::IOHandling(Process* &run, int neededio)
 	{

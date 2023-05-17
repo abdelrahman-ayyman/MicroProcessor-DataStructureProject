@@ -111,15 +111,16 @@ int  gettotalreq()
  
  }
 
- /*bool FindProcessByPID(int id)
+ bool getpointerto(int id, Process*& p)
  {
 	 if (Running->getID() == id)
-		 return Running;
-	 while(rdylist.isEmpty()!=false)
 	 {
-
+		 p = Running;
+		 return true;
 	 }
- }*/
+	int found= rdylist.getpointer(id, p);
+	return found;
+ }
 
  void storeForked(Process* p)
  {

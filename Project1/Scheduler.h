@@ -24,7 +24,8 @@ private:
 	double forkprob;
 
 	int MigRTF, MigMaxW, workstealper;
-	
+	int Numberofkillsignals;
+	int NumberofForkedProcesses;
 	
 	ProcessQueue NEWlist;
 	ProcessQueue BLKlist;
