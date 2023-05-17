@@ -26,7 +26,6 @@ int main()
 		if (sh.gettime() % sh.getSTL() == 0)
 			sh.workSteal();
 		sh.RemovekillSignal();
-		
 	//getchar();
 	}
 	sh.OutputFile();

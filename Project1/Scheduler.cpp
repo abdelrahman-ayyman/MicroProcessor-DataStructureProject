@@ -297,9 +297,7 @@ void Scheduler:: addtoBLK(Process*p)
 			fileinput >> rrcount;
 			Processorsnum = fcfscount + sjfcount + rrcount;
 			fileinput >> timeslice >> rtf >> maxW >> stl;
-			int forkprobperc;
-			fileinput >> forkprobperc;
-			//forkprob = forkprobperc / 100.0;
+			fileinput >> forkprob;
 			fileinput >> processnum;
 
 			for (int i = 1; i <= processnum; i++)
@@ -387,16 +385,16 @@ void Scheduler:: addtoBLK(Process*p)
 
 	//abd elrahman ahmed functions
 	//Start of Forking Functions:
-	bool Scheduler::CanForkChild(Process* Process)
-	{
-		bool canFork=true;
-		//test for running,forked before or not,FCFS or not
-		//if (Process->getProcessState() == RUN )
-			canFork = true;
-		if (Process->getForkedBefore() == true)
-			canFork = false;
-		return canFork;
-	}
+	// 
+	//bool Scheduler::CanForkChild(Process* Process)
+	//{
+	//	bool canFork=false;
+	//	if (Process->getProcessState() == RUN )
+	//		canFork = true;
+	//	if (Process->getForkedBefore() == true)
+	//		canFork = false;
+	//	return canFork;
+	//}
 	/*bool Scheduler::TestingProbability(double Probability)
 	{
 		double randNum = ((rand() % 100)+1);
@@ -423,7 +421,7 @@ void Scheduler:: addtoBLK(Process*p)
 		shortestProcessor->addprocess(child);
 		process->setForkedBefore();
 		NumberofForkedProcesses++;
-		cout <<endl<<endl<< child->getID()<<endl<<endl;
+		cout <<endl<<endl<< "childid:"<<child->getID() << endl << endl;
 		return;
 	}
 

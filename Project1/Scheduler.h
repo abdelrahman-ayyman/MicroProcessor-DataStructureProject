@@ -30,7 +30,7 @@ private:
 	ProcessQueue TRMlist;
 	//abd elrahman ahmed variables
 	LinkedQueue<Pairs> Sigkilllist;
-	double forkprob;
+	int forkprob;
 	int Numberofkillsignals;
 	int NumberofForkedProcesses;
 	//end of abd elrahman ahmed variables
@@ -97,8 +97,8 @@ public:
 	//abd elrahman ahmed functions
 	// Start of Forking Functions:
 	bool TestingProbability(double Probability);
-	bool CanForkChild(Process* Process);
-	void forkChild(Process* Process);
+	//bool CanForkChild(Process* Process);
+	void forkChild(Process* process);
 	//Processor* findShortestRdyList();
 	// end of Forking Functions
 	// Start of Kill signal and kill orphans Functions

@@ -51,6 +51,10 @@ void peek(Process* p)
 	 //
 	if(Running!=nullptr)
 	{
+		if (Running->getForkedBefore() == false && TestingProbability() == true)
+		{
+			psh->forkChild(Running);
+		}
 		incrementbusy();
 		if (psh->migrate(Running, FCFS))
 		{
@@ -82,11 +86,6 @@ void peek(Process* p)
 			if( p != nullptr)
 			{
 				p = dequeueprocess();
-				if (psh->CanForkChild(p) && TestingProbability())
-				{
-					psh->forkChild(p);
-				}
-
 				if (!psh->migrate(p, FCFS))
 					Running = p;
 				if (p->getfirsttime())
@@ -178,7 +177,9 @@ int  gettotalreq()
  bool TestingProbability()
  {
 	 double Probability=psh->getForkProbability();
+	 cout << endl<<"proba"<<Probability << endl;
 	 double randNum = ((rand() % 100) + 1);
+	 cout <<"rand" << randNum << endl << endl;
 	 if (randNum <= Probability)
 		 return true;
 	 else

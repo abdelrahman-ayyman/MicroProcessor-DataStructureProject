@@ -53,7 +53,6 @@ public:
 		TerminationTime = -1;
 		TRT = -1;
 		WT = -1;
-		forkedBefore = false;
 		TotalIOD = 0;
 		firsttime = true;
 		child = nullptr;
