@@ -492,42 +492,33 @@ void Scheduler:: addtoBLK(Process*p)
 		Sigkilllist.peek(Killsignal);
 		int KillTime = Killsignal.getfirst();
 		int PID = Killsignal.getsecond();
-		//cout << endl << endl << KillTime << PID<<endl<<endl;
 		bool killed = false;
 		if (timestep == KillTime)
 		{
-			//cout << endl << endl << KillTime << PID << endl << endl;
 			killed = killProcess(PID);
 		}
 		if (killed)
 		{
-			//cout << endl << endl << KillTime << PID << endl << endl;
 			Sigkilllist.dequeue(deleted);
 		}
 		return;
 	}
 	bool Scheduler::killProcess(int id)
 	{
-		//cout << endl << endl << id << endl << endl;
+		cout << endl << endl << id<< endl << endl;
 		bool found = false;
-		for (int i = 0; i < Processorsnum; i++)
+		for (int i = 0; i < fcfscount; i++)
 		{
-			//cout << endl<<pros[i]->getType() << endl;
-			if (pros[i]->getType() == "FCFS")
-			{
-				//cout << endl << pros[i]->getType() << endl;
+			cout << endl << endl << id << endl << endl;
 				Process* Processptr = nullptr;
 				found = pros[i]->getpointerto(id, Processptr);
-				cout << endl << endl << Processptr->getID() << endl << endl;
-				//remove from ready or run
-				Processptr->getProcessState();
 				if (found)
 				{
 					addtoTRM(Processptr);
 					Numberofkillsignals++;
 				}
-			}
 		}
+		RemovekillSignal();
 		return found;
 	}
 	//void Scheduler ::printall()
