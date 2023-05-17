@@ -53,7 +53,6 @@ void peek(Process* p)
 	{
 		if (Running->getForkedBefore() == false && TestingProbability() == true)
 		{
-			cout << endl << endl << Running->getID() << endl << endl;
 			psh->forkChild(Running);
 		}
 		incrementbusy();

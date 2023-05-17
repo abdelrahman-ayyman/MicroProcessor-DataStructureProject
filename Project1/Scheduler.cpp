@@ -283,7 +283,7 @@ void Scheduler:: addtoBLK(Process*p)
 		{
 	        TRMcount++;
 	        TRMlist.enqueue(p);
-			if (p->isParent())
+			if (p->isParent()&&p->getChild()!=nullptr)
 			{
 				cout << endl << "parent:  " << p->getID() << "  child:  " << p->getChild()->getID()<<endl;
 				if (p->getParent() != nullptr)
@@ -489,7 +489,6 @@ void Scheduler:: addtoBLK(Process*p)
 		child->setParent(nullptr);
 		int id=child->getID();
 		bool killed = killProcess(id);
-		//check for other orphans killed when arrived to trm list
 		return;
 	}
 	void Scheduler::RemovekillSignal()
