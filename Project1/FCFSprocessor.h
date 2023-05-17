@@ -148,5 +148,22 @@ int  gettotalreq()
 	 }
  }
 
+ void incrementbusy()
+ {
+	 busytime++;
+ }
+ int getbusy()
+ {
+	 return busytime;
+ }
+
+ void incrementidle()
+ {
+	 idletime++;
+ }
+ int getidle()
+ {
+	 return idletime;
+ }
 
 };
