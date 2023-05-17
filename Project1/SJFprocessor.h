@@ -8,7 +8,7 @@ class SJFprocessor:public Processor
 {
 private:
 	SJQueue rdylist;
-	SJQueue temp;
+	//SJQueue temp;
 public:
 SJFprocessor(Scheduler* sh):Processor(sh)
 {
@@ -44,7 +44,7 @@ void printRdyList()
 	
 	if(Running!=nullptr)
 	{
-
+		incrementbusy();
 		Running->incrementexcuted();
 		if (Running->getexcuted() == Running->getCpuTime())
 		{
@@ -63,6 +63,7 @@ void printRdyList()
 	Process*p;
 	if(Running==nullptr)
 	{
+		incrementidle();
 		if(!rdylist.isEmpty())
 		{
 			rdylist.peek(p);
@@ -70,7 +71,11 @@ void printRdyList()
 			{
 	p=dequeueprocess();
 	Running=p;
-	
+	if (p->getfirsttime())
+	{
+		p->setfirsttimeCPU(psh->gettime());
+		p->setfirsttime();
+	}
 	
 			}
 		}
@@ -107,17 +112,20 @@ bool removebyid(int id, Process*& p)
 
 void storeForked(Process* p)
 {
+	/*
 	Process* q;
 
 	this->dequeueprocess();
 	temp.enqueue(p);
 	this->peek(q);
-	if (q && q->getForked())
+	if (q && q->getForkedBefore())
 		storeForked(q);
+		*/
 }
 
 void restoreForked()
 {
+	/*
 	Process* p = this->dequeueprocess();
 	while (p)
 	{
@@ -130,7 +138,25 @@ void restoreForked()
 		temp.dequeue(p);
 		this->addprocess(p);
 	}
+	*/
 }
 
+void incrementbusy()
+{
+	busytime++;
+}
+int getbusy()
+{
+	return busytime;
+}
+
+void incrementidle()
+{
+	idletime++;
+}
+int getidle()
+{
+	return idletime;
+}
 
 };

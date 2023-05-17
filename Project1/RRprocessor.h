@@ -9,7 +9,7 @@ class RRprocessor:public Processor
 private:
 	int counterslice;
 	ProcessQueue rdylist;
-	ProcessQueue temp;
+	// ProcessQueue temp;
 
 public:
 	RRprocessor(Scheduler* sh):Processor(sh)
@@ -46,6 +46,7 @@ public:
 	
 	if(Running!=nullptr)
 	{
+		incrementbusy();
 		if (psh->migrate(Running, RR))
 		{
 			Running = nullptr;
@@ -89,6 +90,7 @@ public:
 	Process*p;
 	if(Running == nullptr)
 	{
+		incrementidle();
 		if(!rdylist.isEmpty())
 		{
 			rdylist.peek(p);
@@ -98,6 +100,11 @@ public:
 
 				if (!psh->migrate(p, RR))
 					Running = p;
+				if (p->getfirsttime())
+				{
+					p->setfirsttimeCPU(psh->gettime());
+					p->setfirsttime();
+				}
 			}
 		}
 	}
@@ -127,17 +134,20 @@ Process* dequeueprocess()
 
  void storeForked(Process* p)
  {
+	 /*
 	 Process* q;
 
 	 this->dequeueprocess();
 	 temp.enqueue(p);
 	 this->peek(q);
-	 if (q && q->getForked())
+	 if (q && q->getForkedBefore())
 		 storeForked(q);
+		*/
  }
 
  void restoreForked()
  {
+	 /*
 	 Process* p = this->dequeueprocess();
 	 while (p)
 	 {
@@ -150,7 +160,23 @@ Process* dequeueprocess()
 		 temp.dequeue(p);
 		 this->addprocess(p);
 	 }
+	 */
  }
 
-
+ void incrementbusy()
+ {
+	 busytime++;
+ }
+ int getbusy()
+ {
+	 return busytime;
+ }
+ void incrementidle()
+ {
+	 idletime++;
+ }
+ int getidle()
+ {
+	 return idletime;
+ }
 };

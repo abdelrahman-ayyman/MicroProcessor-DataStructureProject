@@ -25,14 +25,13 @@ LinkedQueue<Pairs> IOprocess;
 //very important! Node* IOlist;
 //Node*child; bool isparent;
 
-bool forked;
 bool forkedBefore;
 int TerminationTime;
 int FirstResponse;
 int TRT;
 int WT; 
 int TotalIOD;
-
+bool firsttime;
 /**/
 ProcessState State;
 
@@ -47,13 +46,14 @@ public:
 		CpuTime=runtime;
 		IOcount=IOnum;
 		totalexcuted = 0;
-		forked = false;
+		forkedBefore = false;
 		FirstResponse = -1;
 		TerminationTime = -1;
 		TRT = -1;
 		WT = -1;
 		forkedBefore = false;
 		TotalIOD = 0;
+		firsttime = true;
 	}
 	int getID()
 	{
@@ -82,11 +82,6 @@ public:
 		return IOneeded;
 	}
 
-	bool getForked()
-	{
-		return forked;
-	}
-
 	int getTermination()
 	{
 		return TerminationTime;
@@ -94,11 +89,6 @@ public:
 	ProcessState getProcessState()
 	{
 		return State;
-	}
-
-	bool setAsForked()
-	{
-		forked = true;
 	}
 
 	void setIOneeded(int x)
@@ -181,6 +171,14 @@ public:
 	int getfirsttimeCPU()
 	{
 		return firsttimeCPU;
+	}
+	void setfirsttime()
+	{
+		firsttime=false;
+	}
+	int getfirsttime()
+	{
+		return firsttime;
 	}
 	~Process(void)
 	{

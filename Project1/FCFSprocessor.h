@@ -51,6 +51,7 @@ void peek(Process* p)
 	 //
 	if(Running!=nullptr)
 	{
+		incrementbusy();
 		if (psh->migrate(Running, FCFS))
 		{
 			Running = nullptr;
@@ -74,6 +75,7 @@ void peek(Process* p)
 	Process*p;
 	if(Running==nullptr)
 	{
+		incrementidle();
 		if(!rdylist.isEmpty())
 		{
 			rdylist.peek(p);
@@ -83,6 +85,11 @@ void peek(Process* p)
 
 				if (!psh->migrate(p, FCFS))
 					Running = p;
+				if (p->getfirsttime())
+				{
+					p->setfirsttimeCPU(psh->gettime());
+					p->setfirsttime();
+				}
 			}
 		}
 	}
@@ -121,7 +128,7 @@ int  gettotalreq()
 	 this->dequeueprocess();
 	 temp.insertlast(p);
 	 this->peek(q);
-	 if (q && q->getForked())
+	 if (q && q->getForkedBefore())
 		 storeForked(q);
  }
 
@@ -141,13 +148,5 @@ int  gettotalreq()
 	 }
  }
 
- /*int TotalCpuTime()
- {
-	 int total;
-	 Process* ptr = rdyList.
-	 while (rdylist.isEmpty() != false)
-	 {
-		 total=total+
-	 }
- }*/
+
 };

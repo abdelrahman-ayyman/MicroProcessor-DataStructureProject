@@ -5,6 +5,8 @@
 #include<cstdlib>
 #include<time.h>
 #include <fstream>
+#include "defs.h"
+
 
 
 int Scheduler::checkAvailability(ProcessorType type = ALL)
@@ -61,11 +63,7 @@ void Scheduler::Assign()
 			//VI
 
 			int minindex = checkAvailability();
-			if (minindex != -1 )
-			{
-
-				q->setfirsttimeCPU(gettime());
-			}
+			
 			pros[minindex]->addprocess(q);	
 		}
 		else
@@ -77,7 +75,7 @@ void Scheduler::Assign()
 
 bool Scheduler::migrate(Process* p, ProcessorType Type)
 {
-	if (p->getForked() == true)
+	if (p->getForkedBefore() == true)
 		return false;
 
 	if (Type == RR)
@@ -86,6 +84,7 @@ bool Scheduler::migrate(Process* p, ProcessorType Type)
 		{
 			int minindex = checkAvailability(SJF);
 			pros[minindex]->addprocess(p);
+			MigRTF++;
 			return true;
 		}
 	}
@@ -95,6 +94,7 @@ bool Scheduler::migrate(Process* p, ProcessorType Type)
 		{
 			int minindex = checkAvailability(RR);
 			pros[minindex]->addprocess(p);
+			MigMaxW++;
 			return true;
 		}
 	}
@@ -132,7 +132,7 @@ void Scheduler::workSteal()
 		Process* p;
 		pros[longestQueue]->peek(p);
 
-		if (p && p->getForked())
+		if (p && p->getForkedBefore())
 		{
 			pros[longestQueue]->storeForked(p);
 			bool onlyForked = false;
@@ -151,6 +151,7 @@ void Scheduler::workSteal()
 				pros[shortestQueue]->addprocess(p);
 
 				pros[longestQueue]->restoreForked();
+				workstealper++;
 			}
 
 		}
@@ -158,9 +159,14 @@ void Scheduler::workSteal()
 		{
 			pros[longestQueue]->dequeueprocess();
 			pros[shortestQueue]->addprocess(p);
+			workstealper++;
 		}
 
 		p = nullptr;
+
+		if (pros[longestQueue]->gettotalreq() == 0)
+			break;
+
 	}
 
 }
@@ -181,6 +187,9 @@ Scheduler::Scheduler()
 	timestep=1;
 	BLKcount=0;
 	TRMcount=0;
+	MigMaxW = 0;
+	MigRTF = 0;
+	workstealper = 0;
 }
 
 
@@ -425,7 +434,7 @@ void Scheduler:: addtoBLK(Process*p)
 				shortestProcessor = pros[i];
 			}
 		}
-		return shortestProcessor;
+		return shoertestprocessor;
 	}*/
 
 	// end of Forking Functions
@@ -530,13 +539,12 @@ void Scheduler:: addtoBLK(Process*p)
 
 		ofstream Outputfile("OutPutFile.txt");
 		Process* p;
-		int currentWT=0, currentRT=0, currentTRT=0;
-		int totalWT=0, totalRT=0, totalTRT =0;
-		int avgWT=0, avgRT=0, avgTRT=0;
-		int MigRTF=0, MigMaxW=0;
-		int workstealperc=0, forkperc=0, killperc=0;
-		int processorload=0, processorutilization=0;
-		int avgUtilization=0;
+		int currentWT, currentRT, currentTRT;
+		int totalWT = 0, totalRT = 0;
+		int totalTRT =0;
+		int forkperc =0, killperc =0;
+		int processorload, processorutilization;
+		int avgUtilization;
 
 		Outputfile << "TT" << "\t" << "PID" << "\t" << "AT" << "\t" << "CT" << "\t" << "IO_D" << "\t" << "WT" << "\t" << "RT" << "\t" << "TRT" << endl;
 
@@ -550,7 +558,7 @@ void Scheduler:: addtoBLK(Process*p)
 			currentWT = (p->getTermination() - p->getArrivalTime()) - p->getCpuTime();
 			Outputfile << currentWT << "\t";
 			totalWT += currentWT;
-			currentRT = p->getArrivalTime() - p->getfirsttimeCPU();
+			currentRT = abs(p->getArrivalTime() - p->getfirsttimeCPU());
 			Outputfile << currentRT << "\t";
 			totalRT += currentRT;
 			currentTRT = p->getTermination() - p->getArrivalTime();
@@ -563,25 +571,35 @@ void Scheduler:: addtoBLK(Process*p)
 		Outputfile << "avg WT = " << totalWT / totalprocesses << ",\t";
 		Outputfile << "avg RT = " << totalRT / totalprocesses << ",\t";
 		Outputfile << "avg TRT = " << totalTRT / totalprocesses << endl;
-		Outputfile << "Migration %:\t RTF= " << MigRTF / totalprocesses << "%,\t MaxW = " << MigMaxW / totalprocesses << "%" << endl;
-		Outputfile << "Work Steal %:" << workstealperc / totalprocesses << "%" << endl;
-		Outputfile << "Forked Process: " << forkperc / totalprocesses << "%" << endl;
-		Outputfile << "Killed Process: " << killperc / totalprocesses << "%" << endl << endl;
+		Outputfile << "Migration %:\t RTF= " << ((float)MigRTF / totalprocesses)*100 << "%,\t MaxW = " << MigMaxW / totalprocesses << "%" << endl;
+		Outputfile << "Work Steal %:" << ((float)workstealper / totalprocesses)*100 << "%" << endl;
+		Outputfile << "Forked Process: " << ((float)forkperc / totalprocesses)*100 << "%" << endl;
+		Outputfile << "Killed Process: " << ((float)killperc / totalprocesses)*100 << "%" << endl << endl;
 		int totalprocessors = fcfscount + sjfcount + rrcount;
-		Outputfile << "Processors: " << totalprocessors << " [" << fcfscount << "FCFS, " << sjfcount << " SJF, " << rrcount << " RR]" << endl;
+		Outputfile << "Processors: " << totalprocessors << " [" << fcfscount << " FCFS, " << sjfcount << " SJF, " << rrcount << " RR]" << endl;
 		Outputfile << "Processors Load" << endl;
 		for (int i = 1; i <= totalprocessors; i++)
 		{
-			Outputfile << "p" << i << "=" << "%,\t";
+			Outputfile << "p" << i  << "=" << ((pros[i-1]->getbusy()) / (float)totalTRT)*100 << "%,\t";
+			
 		}
 		Outputfile << endl << endl;
 		Outputfile << "Processors Utiliz" << endl;
+		float totalut = 0;
+		float currut = 0;
 		for (int i = 1; i <= totalprocessors; i++)
 		{
-			Outputfile << "p" << i << "=" << "%,\t";
+			if (pros[i - 1]->getidle() != 0)
+			{
+				currut = ((float)(pros[i - 1]->getbusy()) / ((pros[i - 1]->getbusy()) + (pros[i - 1]->getidle())))*100;
+				
+				totalut += currut;
+			}
+			Outputfile << "p" << i << "=" << currut << "%,\t";
+	
 		}
 		Outputfile << endl;
-		Outputfile << "Avg utilization = " << "%";
+		Outputfile << "Avg utilization = " << totalut/totalprocessors << "%";
 
 		Outputfile.close();
 	}
