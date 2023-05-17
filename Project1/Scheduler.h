@@ -37,6 +37,10 @@ private:
 
 
 public:
+	int getForkProbability()
+	{
+		return forkprob;
+	}
 	int gettime()
 	{
 	

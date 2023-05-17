@@ -139,5 +139,6 @@ virtual void incrementidle() = 0;
 virtual int getidle() = 0;
 //abd elrahman ahmed functions
 virtual bool getpointerto(int id, Process*& p) = 0;
+virtual bool TestingProbability() = 0;
 //end of abd elrahman ahmed functions
 };

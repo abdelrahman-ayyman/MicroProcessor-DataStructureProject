@@ -288,7 +288,7 @@ void Scheduler:: addtoBLK(Process*p)
 
 	void Scheduler::Load()
 	{
-		ifstream fileinput("newtesting.txt");
+		ifstream fileinput("bigtest.txt");
 
 		if (fileinput.is_open())
 		{
@@ -389,22 +389,22 @@ void Scheduler:: addtoBLK(Process*p)
 	//Start of Forking Functions:
 	bool Scheduler::CanForkChild(Process* Process)
 	{
-		bool canFork;
+		bool canFork=true;
 		//test for running,forked before or not,FCFS or not
-		if (Process->getProcessState() == RUN )
+		//if (Process->getProcessState() == RUN )
 			canFork = true;
 		if (Process->getForkedBefore() == true)
 			canFork = false;
 		return canFork;
 	}
-	bool Scheduler::TestingProbability(double Probability)
+	/*bool Scheduler::TestingProbability(double Probability)
 	{
 		double randNum = ((rand() % 100)+1);
 		if (randNum <= Probability)
 			return true;
 		else
 			return false;
-    }
+    }*/
 
 	void Scheduler::forkChild(Process* process)
 	{
@@ -423,6 +423,7 @@ void Scheduler:: addtoBLK(Process*p)
 		shortestProcessor->addprocess(child);
 		process->setForkedBefore();
 		NumberofForkedProcesses++;
+		cout <<endl<<endl<< child->getID()<<endl<<endl;
 		return;
 	}
 
@@ -505,11 +506,11 @@ void Scheduler:: addtoBLK(Process*p)
 	}
 	bool Scheduler::killProcess(int id)
 	{
-		cout << endl << endl << id<< endl << endl;
+		//cout << endl << endl << id<< endl << endl;
 		bool found = false;
 		for (int i = 0; i < fcfscount; i++)
 		{
-			cout << endl << endl << id << endl << endl;
+			//cout << endl << endl << id << endl << endl;
 				Process* Processptr = nullptr;
 				found = pros[i]->getpointerto(id, Processptr);
 				if (found)
@@ -518,7 +519,6 @@ void Scheduler:: addtoBLK(Process*p)
 					Numberofkillsignals++;
 				}
 		}
-		RemovekillSignal();
 		return found;
 	}
 	//void Scheduler ::printall()

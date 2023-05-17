@@ -162,4 +162,8 @@ bool getpointerto(int id, Process*& p)
 {
 	return false;
 }
+bool TestingProbability()
+{
+	return false;
+}
 };

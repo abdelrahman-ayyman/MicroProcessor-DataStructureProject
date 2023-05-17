@@ -184,4 +184,8 @@ Process* dequeueprocess()
  {
 	 return false;
  }
+ bool TestingProbability()
+ {
+	 return false;
+ }
 };

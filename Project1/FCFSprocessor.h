@@ -82,6 +82,10 @@ void peek(Process* p)
 			if( p != nullptr)
 			{
 				p = dequeueprocess();
+				if (psh->CanForkChild(p) && TestingProbability())
+				{
+					psh->forkChild(p);
+				}
 
 				if (!psh->migrate(p, FCFS))
 					Running = p;
@@ -170,6 +174,15 @@ int  gettotalreq()
 	// Process* q;
 	 bool found = rdylist.removeid(id, p);
 	 return found;
+ }
+ bool TestingProbability()
+ {
+	 double Probability=psh->getForkProbability();
+	 double randNum = ((rand() % 100) + 1);
+	 if (randNum <= Probability)
+		 return true;
+	 else
+		 return false;
  }
  //end of abd elrahman ahmed functions
 };
