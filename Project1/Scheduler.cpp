@@ -283,6 +283,7 @@ void Scheduler:: addtoBLK(Process*p)
 		{
 	        TRMcount++;
 	        TRMlist.enqueue(p);
+			/*
 			if (p->isParent()&&p->getChild()!=nullptr)
 			{
 				cout << endl << "parent:  " << p->getID() << "  child:  " << p->getChild()->getID()<<endl;
@@ -290,6 +291,7 @@ void Scheduler:: addtoBLK(Process*p)
 					p->getParent()->setChild(nullptr);
 				killOrphans(p->getChild());
 			}
+			*/
 		}
 	}
 
@@ -511,6 +513,7 @@ void Scheduler:: addtoBLK(Process*p)
 	}
 	bool Scheduler::killProcess(int id)
 	{
+		/*
 		//cout << endl << endl << id<< endl << endl;
 		bool found = false;
 		for (int i = 0; i < fcfscount; i++)
@@ -524,7 +527,8 @@ void Scheduler:: addtoBLK(Process*p)
 					Numberofkillsignals++;
 				}
 		}
-		return found;
+		return found;*/
+		return 0;
 	}
 	//void Scheduler ::printall()
 	//{
@@ -612,8 +616,7 @@ void Scheduler:: addtoBLK(Process*p)
 		Process* p;
 		int currentWT, currentRT, currentTRT;
 		int totalWT = 0, totalRT = 0;
-		int totalTRT =0;
-		int forkperc =0, killperc =0;
+		int totalTRT = 0;
 		int processorload, processorutilization;
 		int avgUtilization;
 
@@ -644,8 +647,8 @@ void Scheduler:: addtoBLK(Process*p)
 		Outputfile << "avg TRT = " << totalTRT / totalprocesses << endl;
 		Outputfile << "Migration %:\t RTF= " << ((float)MigRTF / totalprocesses)*100 << "%,\t MaxW = " << MigMaxW / totalprocesses << "%" << endl;
 		Outputfile << "Work Steal %:" << ((float)workstealper / totalprocesses)*100 << "%" << endl;
-		Outputfile << "Forked Process: " << ((float)forkperc / totalprocesses)*100 << "%" << endl;
-		Outputfile << "Killed Process: " << ((float)killperc / totalprocesses)*100 << "%" << endl << endl;
+		Outputfile << "Forked Process: " << ((float)NumberofForkedProcesses / totalprocesses)*100 << "%" << endl;
+		Outputfile << "Killed Process: " << ((float)Numberofkillsignals / totalprocesses)*100 << "%" << endl << endl;
 		int totalprocessors = fcfscount + sjfcount + rrcount;
 		Outputfile << "Processors: " << totalprocessors << " [" << fcfscount << " FCFS, " << sjfcount << " SJF, " << rrcount << " RR]" << endl;
 		Outputfile << "Processors Load" << endl;
