@@ -177,9 +177,9 @@ int  gettotalreq()
  bool TestingProbability()
  {
 	 double Probability=psh->getForkProbability();
-	 cout << endl<<"proba"<<Probability << endl;
+	 //cout << endl<<"proba"<<Probability << endl;
 	 double randNum = ((rand() % 100) + 1);
-	 cout <<"rand" << randNum << endl << endl;
+	 //cout <<"rand" << randNum << endl << endl;
 	 if (randNum <= Probability)
 		 return true;
 	 else
