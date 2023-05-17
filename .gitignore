@@ -6,3 +6,6 @@
 /.vs/
 *.vsidx
 /Debug/
+/.vs/Project1/v17/ipch/AutoPCH/5fa0792ca147e837/SCHEDULER.ipch
+/.vs/Project1/v17/ipch/AutoPCH/5fa0792ca147e837/SCHEDULER.ipch
+/.gitignore
