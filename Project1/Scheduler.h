@@ -31,8 +31,8 @@ private:
 	//abd elrahman ahmed variables
 	LinkedQueue<Pairs> Sigkilllist;
 	int forkprob;
-	int Numberofkillsignals;
-	int NumberofForkedProcesses;
+	int Numberofkillsignals=0;
+	int NumberofForkedProcesses=0;
 	//end of abd elrahman ahmed variables
 
 
@@ -102,6 +102,7 @@ public:
 	//Processor* findShortestRdyList();
 	// end of Forking Functions
 	// Start of Kill signal and kill orphans Functions
+	void killSignal();
 	void RemovekillSignal();
 	bool killProcess(int id);
 	void killOrphans(Process* child);
