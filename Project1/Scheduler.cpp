@@ -527,6 +527,7 @@ void Scheduler:: addtoBLK(Process*p)
 				//cout << endl << endl << found << endl << endl;
 				if (found)
 				{
+					Processptr->setTermination(timestep);
 					addtoTRM(Processptr);
 					Numberofkillsignals++;
 				}
