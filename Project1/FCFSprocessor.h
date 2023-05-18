@@ -163,16 +163,19 @@ int  gettotalreq()
  //abd elrahman ahmed functions
  bool getpointerto(int id, Process*& p)
  {
-
-		 if (Running->getID() == id)
+	     bool found = false;
+	     //cout << endl << endl << id << endl << endl;
+		 if (Running!=nullptr)
 		 {
-			 p = Running;
-			 Running = nullptr;
-			 return true;
+			 if (Running->getID() == id)
+			 {
+				 //cout << endl << endl << id << endl << endl;
+				 p = Running;
+				 Running = nullptr;
+				 return true;
+			 }
 		 }
-		 //bool found = rdylist.getpointer(id, p);
-		// Process* q;
-		 bool found = rdylist.removeid(id, p);
+		 found = rdylist.removeid(id, p);
 		 return found;
 	 
  }

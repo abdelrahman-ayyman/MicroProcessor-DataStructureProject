@@ -283,15 +283,15 @@ void Scheduler:: addtoBLK(Process*p)
 		{
 	        TRMcount++;
 	        TRMlist.enqueue(p);
-			/*
+			
 			if (p->isParent()&&p->getChild()!=nullptr)
 			{
-				cout << endl << "parent:  " << p->getID() << "  child:  " << p->getChild()->getID()<<endl;
+				//cout << endl << "parent:  " << p->getID() << "  child:  " << p->getChild()->getID()<<endl;
 				if (p->getParent() != nullptr)
 					p->getParent()->setChild(nullptr);
 				killOrphans(p->getChild());
 			}
-			*/
+			
 		}
 	}
 
@@ -404,14 +404,14 @@ void Scheduler:: addtoBLK(Process*p)
 	//		canFork = false;
 	//	return canFork;
 	//}
-	/*bool Scheduler::TestingProbability(double Probability)
+	bool Scheduler::TestingProbability(double Probability)
 	{
 		double randNum = ((rand() % 100)+1);
 		if (randNum <= Probability)
 			return true;
 		else
 			return false;
-    }*/
+    }
 
 	void Scheduler::forkChild(Process* process)
 	{
@@ -474,7 +474,7 @@ void Scheduler:: addtoBLK(Process*p)
 	//				Process* Processptr=nullptr;
 	//				found=pros[i]->getpointerto(PID, Processptr);
 	//				cout << endl<<endl<<found<<endl;
-	//				//cout <<"found process"<< Processptr << endl;
+	//				cout <<"found process"<< Processptr->getID() << endl;
 	//				addtoTRM(Processptr);
 	//			}
 	//		}
@@ -501,8 +501,11 @@ void Scheduler:: addtoBLK(Process*p)
 		int KillTime = Killsignal.getfirst();
 		int PID = Killsignal.getsecond();
 		bool killed = false;
+		if(timestep>KillTime)
+			Sigkilllist.dequeue(deleted);
 		if (timestep == KillTime)
 		{
+			//cout << endl << endl << PID<< endl << endl;
 			killed = killProcess(PID);
 		}
 		if (killed)
@@ -513,21 +516,22 @@ void Scheduler:: addtoBLK(Process*p)
 	}
 	bool Scheduler::killProcess(int id)
 	{
-		/*
+		
 		//cout << endl << endl << id<< endl << endl;
 		bool found = false;
 		for (int i = 0; i < fcfscount; i++)
 		{
-			//cout << endl << endl << id << endl << endl;
+			    //cout << endl << endl << id << endl << endl;
 				Process* Processptr = nullptr;
 				found = pros[i]->getpointerto(id, Processptr);
+				//cout << endl << endl << found << endl << endl;
 				if (found)
 				{
 					addtoTRM(Processptr);
 					Numberofkillsignals++;
 				}
 		}
-		return found;*/
+		return found;
 		return 0;
 	}
 	//void Scheduler ::printall()
