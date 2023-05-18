@@ -57,6 +57,7 @@ public:
 		firsttime = true;
 		child = nullptr;
 		parent = nullptr;
+		firsttimeCPU = 0;
 	}
 	int getID()
 	{

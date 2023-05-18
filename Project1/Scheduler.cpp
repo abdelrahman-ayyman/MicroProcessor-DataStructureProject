@@ -297,7 +297,7 @@ void Scheduler:: addtoBLK(Process*p)
 
 	void Scheduler::Load()
 	{
-		ifstream fileinput("newtesting.txt");
+		ifstream fileinput("InputCase1.txt");
 
 		if (fileinput.is_open())
 		{
@@ -635,6 +635,11 @@ void Scheduler:: addtoBLK(Process*p)
 			Outputfile << p->getCpuTime() << "\t";
 			Outputfile << p->getTotalIOD() << "\t";
 			currentWT = (p->getTermination() - p->getArrivalTime()) - p->getCpuTime();
+			
+			if (p->getfirsttime() ||  currentWT== -1)
+			{
+				currentWT = 0;
+			}
 			Outputfile << currentWT << "\t";
 			totalWT += currentWT;
 			currentRT = abs(p->getArrivalTime() - p->getfirsttimeCPU());
@@ -645,15 +650,15 @@ void Scheduler:: addtoBLK(Process*p)
 			totalTRT += currentTRT;
 
 		}
-		int totalprocesses = getprocessnum();
+		float totalprocesses = getprocessnum();
 		Outputfile << "\n" << "Processes: " << totalprocesses << endl;
-		Outputfile << "avg WT = " << totalWT / totalprocesses << ",\t";
-		Outputfile << "avg RT = " << totalRT / totalprocesses << ",\t";
-		Outputfile << "avg TRT = " << totalTRT / totalprocesses << endl;
-		Outputfile << "Migration %:\t RTF= " << ((float)MigRTF / totalprocesses)*100 << "%,\t MaxW = " << MigMaxW / totalprocesses << "%" << endl;
-		Outputfile << "Work Steal %:" << ((float)workstealper / totalprocesses)*100 << "%" << endl;
-		Outputfile << "Forked Process: " << ((float)NumberofForkedProcesses / totalprocesses)*100 << "%" << endl;
-		Outputfile << "Killed Process: " << ((float)Numberofkillsignals / totalprocesses)*100 << "%" << endl << endl;
+		Outputfile << "avg WT = " << totalWT / (int)totalprocesses << ",\t";
+		Outputfile << "avg RT = " << totalRT / (int)totalprocesses << ",\t";
+		Outputfile << "avg TRT = " << totalTRT / (int)totalprocesses << endl;
+		Outputfile << "Migration %:\t RTF= " << (MigRTF / totalprocesses)*100 << "%,\t MaxW = " << MigMaxW / totalprocesses << "%" << endl;
+		Outputfile << "Work Steal %:" << (workstealper / totalprocesses)*10000 << "%" << endl;
+		Outputfile << "Forked Process: " << (NumberofForkedProcesses / totalprocesses)*100 << "%" << endl;
+		Outputfile << "Killed Process: " << (Numberofkillsignals / totalprocesses)*100 << "%" << endl << endl;
 		int totalprocessors = fcfscount + sjfcount + rrcount;
 		Outputfile << "Processors: " << totalprocessors << " [" << fcfscount << " FCFS, " << sjfcount << " SJF, " << rrcount << " RR]" << endl;
 		Outputfile << "Processors Load" << endl;
