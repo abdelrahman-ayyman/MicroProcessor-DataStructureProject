@@ -297,7 +297,7 @@ void Scheduler:: addtoBLK(Process*p)
 
 	void Scheduler::Load()
 	{
-		ifstream fileinput("bigtest.txt");
+		ifstream fileinput("newtesting.txt");
 
 		if (fileinput.is_open())
 		{
